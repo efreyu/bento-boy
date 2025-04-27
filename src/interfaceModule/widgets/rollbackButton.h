@@ -15,7 +15,7 @@ namespace bt::interfaceModule {
         ~rollbackButton() override;
         CREATE_FUNC(rollbackButton);
 
-        cocos2d::Label* getLabel();
+        ax::Label* getLabel();
         void setLabelText(const std::string& str = std::string());
 
     };

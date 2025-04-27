@@ -7,7 +7,7 @@
 namespace bt::interfaceModule {
 
     class buttonWidget
-      : public cocos2d::Node
+      : public ax::Node
       , public generic::coreModule::nodeProperties {
     public:
         buttonWidget();

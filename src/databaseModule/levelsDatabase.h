@@ -13,8 +13,8 @@ namespace bt::databaseModule {
 
     struct sObjectType {
         std::string name;
-        std::map<std::string, cocos2d::Value::Type> requiredProps;
-        std::map<std::string, cocos2d::Value::Type> allowedProps;
+        std::map<std::string, ax::Value::Type> requiredProps;
+        std::map<std::string, ax::Value::Type> allowedProps;
     };
 
     struct sLevelData {
@@ -42,7 +42,7 @@ namespace bt::databaseModule {
             return objectTypeMap;
         }
 
-        static cocos2d::Value::Type getValueType(const std::string& str);
+        static ax::Value::Type getValueType(const std::string& str);
 
     private:
         std::map<int, sLevelData> levelsDb;

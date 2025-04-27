@@ -1,5 +1,4 @@
 #include "mapObjectsDatabase.h"
-#include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include <cassert>
 

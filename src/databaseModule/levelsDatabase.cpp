@@ -7,12 +7,12 @@
 
 using namespace bt::databaseModule;
 
-std::map<std::string, cocos2d::Value::Type> typesMap = {
-  {"int", cocos2d::Value::Type::INTEGER},
-  {"double", cocos2d::Value::Type::DOUBLE},
-  {"float", cocos2d::Value::Type::FLOAT},
-  {"string", cocos2d::Value::Type::STRING},
-  {"bool", cocos2d::Value::Type::BOOLEAN}
+std::map<std::string, ax::Value::Type> typesMap = {
+  {"int", ax::Value::Type::INTEGER},
+  {"double", ax::Value::Type::DOUBLE},
+  {"float", ax::Value::Type::FLOAT},
+  {"string", ax::Value::Type::STRING},
+  {"bool", ax::Value::Type::BOOLEAN}
 };
 
 levelsDatabase::levelsDatabase() = default;
@@ -114,9 +114,9 @@ const sLevelData& levelsDatabase::getLevelById(int id) {
 bool levelsDatabase::hasLevelById(int id) const {
     return levelsDb.count(id);
 }
-cocos2d::Value::Type levelsDatabase::getValueType(const std::string& str) {
+ax::Value::Type levelsDatabase::getValueType(const std::string& str) {
     if (typesMap.count(str)) {
         return typesMap[str];
     }
-    return cocos2d::Value::Type::NONE;
+    return ax::Value::Type::NONE;
 }

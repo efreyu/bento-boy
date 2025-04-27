@@ -1,9 +1,13 @@
 #include "controllerButtonWidget.h"
+
+#include "generic/utilityModule/findUtility.h"
+
 #include <generic/audioModule/audioEngineInstance.h>
 #include <map>
 #include <string>
 
 using namespace bt::interfaceModule;
+using namespace generic::utilityModule;
 
 const std::map<std::string, eControllerButtonType> buttonTypes = {
     {"typeA", eControllerButtonType::TYPE_A},
@@ -17,9 +21,9 @@ const std::map<std::string, eControllerIconType> iconTypes = {
 
 controllerButtonWidget::controllerButtonWidget() {
     this->setName("controllerButtonWidget");
-    initWithProperties("widgets/" + this->getName());
-    btnNode = dynamic_cast<generic::coreModule::asepriteNode*>(findNode("button"));
-    iconNode = dynamic_cast<generic::coreModule::asepriteNode*>(findNode("icon"));
+    initWithProperties("widgets/" + std::string(this->getName()));
+    btnNode = dynamic_cast<generic::coreModule::asepriteNode*>(findNode(this, "button"));
+    iconNode = dynamic_cast<generic::coreModule::asepriteNode*>(findNode(this, "icon"));
     setChangeColorByClick(false);
 }
 

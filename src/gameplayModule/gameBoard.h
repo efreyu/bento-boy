@@ -22,12 +22,12 @@ namespace bt::gameplayModule {
 
     class gameBoard
       : public generic::coreModule::nodeProperties
-      , public cocos2d::Node {
+      , public ax::Node {
     public:
         gameBoard();
         void loadLevel(int id);
         ~gameBoard() override;
-        cocos2d::TMXTiledMap* getTiled() const {
+        ax::TMXTiledMap* getTiled() const {
             return tiledMap;
         }
         void attachController(interfaceModule::sControllerStickEvents* emitter, generic::coreModule::eventNode* replayBtn);
@@ -38,11 +38,11 @@ namespace bt::gameplayModule {
         void runShowAnimation(const std::function<void()>& clb);
         void runHideAnimation(const std::function<void()>& clb);
 
-        cocos2d::Node* gameFieldNode = nullptr;
+        ax::Node* gameFieldNode = nullptr;
         mapDispatcher* dispatcher = nullptr;
-        cocos2d::TMXTiledMap* tiledMap = nullptr;
-        cocos2d::Label* movesLabel = nullptr;
-        cocos2d::Label* levelsLabel = nullptr;
+        ax::TMXTiledMap* tiledMap = nullptr;
+        ax::Label* movesLabel = nullptr;
+        ax::Label* levelsLabel = nullptr;
         int currentLevel;
         int movesCnt;
         bool boardBlocked = true;

@@ -52,7 +52,7 @@ namespace bt::gameplayModule {
     class mapDispatcher {
     public:
         ~mapDispatcher();
-        static mapDispatcher* createWithObjectsNode(cocos2d::Node* node, cocos2d::TMXTiledMap* tiled, int levelId);
+        static mapDispatcher* createWithObjectsNode(ax::Node* node, ax::TMXTiledMap* tiled, int levelId);
         bool move(eMoveDirection);
         mapDispatcherEvents* getEmitter() {
             return &eventHolder;
@@ -60,11 +60,11 @@ namespace bt::gameplayModule {
 
     private:
         mapDispatcher() = default;
-        void setObjectNode(cocos2d::Node* node) {
+        void setObjectNode(ax::Node* node) {
             objectsNode = node;
         }
-        void loadWalls(const databaseModule::sLevelData&, cocos2d::TMXTiledMap* tiled);
-        void spawnObjects(const databaseModule::sLevelData&, cocos2d::TMXTiledMap* tiled);
+        void loadWalls(const databaseModule::sLevelData&, ax::TMXTiledMap* tiled);
+        void spawnObjects(const databaseModule::sLevelData&, ax::TMXTiledMap* tiled);
         std::pair<int, int> getNextIndex(eMoveDirection direction, const std::pair<int, int>& nextPosition);
         bool hasCollision(eMoveDirection direction, const std::pair<int, int>& currentPos);
         mapCell* getCellByPos(const std::pair<int, int>& pos);
@@ -73,7 +73,7 @@ namespace bt::gameplayModule {
 
 
         databaseModule::levelsTool levelTool;
-        cocos2d::Node* objectsNode = nullptr;
+        ax::Node* objectsNode = nullptr;
         std::pair<int, int> mapSize;
         mapDispatcherEvents eventHolder;
 //        bool win = false;

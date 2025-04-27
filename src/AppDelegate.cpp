@@ -52,11 +52,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #endif
     auto currentResolution = setting->getCurrentSize();
     auto director = Director::getInstance();
-    auto glView = director->getOpenGLView();
+    auto glView = director->getGLView();
     if (!glView) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         glView = GLViewImpl::createWithRect(
-          "Bento boy", cocos2d::Rect(0, 0, currentResolution->size.width, currentResolution->size.height), currentResolution->scale);
+          "Bento boy", ax::Rect(0, 0, currentResolution->size.width, currentResolution->size.height), currentResolution->scale);
         glView->setDesignResolutionSize(currentResolution->size.width, currentResolution->size.height, ResolutionPolicy::EXACT_FIT);
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         glView->setFrameZoomFactor(0.60f);
@@ -64,7 +64,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #else
         glView = GLViewImpl::create("Bento boy");
 #endif
-        director->setOpenGLView(glView);
+        director->setGLView(glView);
     }
 
     // turn on display FPS
@@ -75,7 +75,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // set project view mode
     director->setProjection(Director::Projection::_3D);
-    cocos2d::Sprite::setUsePixelModeGlobal(currentResolution->spritePixel);
+    // ax::Sprite::setUsePixelModeGlobal(currentResolution->spritePixel);
     // Set the design resolution
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
     director->setContentScaleFactor(1.f);

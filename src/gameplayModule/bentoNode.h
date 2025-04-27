@@ -12,7 +12,7 @@ namespace bt::gameplayModule {
     };
     class bentoNode
       : public generic::coreModule::nodeProperties
-      , public cocos2d::Node {
+      , public ax::Node {
     public:
         bentoNode();
         ~bentoNode() override;

@@ -1,11 +1,11 @@
 #ifndef BENTO_BOY_LEVELSTOOL_H
 #define BENTO_BOY_LEVELSTOOL_H
 
-#include "base/CCMap.h"
-#include "base/CCValue.h"
-#include "base/CCVector.h"
+#include "base/Map.h"
+#include "base/Value.h"
+#include "base/Vector.h"
 #include "databaseModule/levelsDatabase.h"
-#include "platform/CCSAXParser.h"
+#include "platform/SAXParser.h"
 #include <map>
 #include <string>
 
@@ -30,7 +30,7 @@ namespace bt::databaseModule {
         int x;
         int y;
         eLocationObject type = eLocationObject::UNDEFINED;
-        std::map<std::string, cocos2d::Value> properties;
+        std::map<std::string, ax::Value> properties;
 
         sObjectData() = default;
         sObjectData(const sObjectData& n){
@@ -41,12 +41,12 @@ namespace bt::databaseModule {
         }
     };
 
-    class levelsTool : public cocos2d::SAXDelegator {
+    class levelsTool : public ax::SAXDelegator {
     public:
         levelsTool();
         ~levelsTool() override;
 
-        std::vector<sObjectData> getAllObjects(cocos2d::TMXTiledMap* map, const sLevelData&);
+        std::vector<sObjectData> getAllObjects(ax::TMXTiledMap* map, const sLevelData&);
         int getWallCount() const;
         bool hasWallTypeByString(const std::string& str) const;
         eLocationWallType getWallTypeByString(const std::string& str);
@@ -58,7 +58,7 @@ namespace bt::databaseModule {
         void startElement(void *ctx, const char *name, const char **atts) override;
         void endElement(void *ctx, const char *name) override;
         void textHandler(void *ctx, const char *ch, size_t len) override;
-        cocos2d::Value makeValue(cocos2d::Value::Type, const std::string&);
+        ax::Value makeValue(ax::Value::Type, const std::string&);
 
         std::map<std::string, sObjectData> objectProperties;
         std::string lastObject;

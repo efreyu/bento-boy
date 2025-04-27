@@ -15,7 +15,7 @@ namespace bt::interfaceModule {
     enum class eControllerIconType { MENU = 0, REPLAY };
 
     class controllerButtonWidget
-      : public generic::coreModule::buttonType<cocos2d::Node>
+      : public generic::coreModule::buttonType<ax::Node>
       , public generic::coreModule::nodeProperties {
     public:
         controllerButtonWidget();

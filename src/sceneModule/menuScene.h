@@ -32,7 +32,7 @@ namespace bt::sceneModule {
     };
 
     struct sActiveMenu {
-        cocos2d::Node* node = nullptr;
+        ax::Node* node = nullptr;
         bool selected = false;
         std::function<void()> clb = nullptr;
         ~sActiveMenu() {
