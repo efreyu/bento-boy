@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_GAMESCENE_H
-#define BENTO_TIME_GAMESCENE_H
+#ifndef BENTO_BOY_GAMESCENE_H
+#define BENTO_BOY_GAMESCENE_H
 
 #include "cocos2d.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
@@ -18,4 +18,4 @@ namespace bt::sceneModule {
 }// namespace bt::sceneModule
 
 
-#endif// BENTO_TIME_GAMESCENE_H
+#endif// BENTO_BOY_GAMESCENE_H

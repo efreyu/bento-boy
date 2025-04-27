@@ -25,7 +25,7 @@
 
 cmake_minimum_required(VERSION 3.20)
 
-set(APP_NAME bento-time)
+set(APP_NAME bento-boy)
 
 project(${APP_NAME})
 

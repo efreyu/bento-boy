@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_PROGRESSPROFILEBLOCK_H
-#define BENTO_TIME_PROGRESSPROFILEBLOCK_H
+#ifndef BENTO_BOY_PROGRESSPROFILEBLOCK_H
+#define BENTO_BOY_PROGRESSPROFILEBLOCK_H
 
 #include "generic/profileModule/profileBlockInterface.h"
 #include "generic/utilityModule/jsonHelper.h"
@@ -39,4 +39,4 @@ namespace bt::profileModule {
 }// namespace bt::profileModule
 
 
-#endif// BENTO_TIME_PROGRESSPROFILEBLOCK_H
+#endif// BENTO_BOY_PROGRESSPROFILEBLOCK_H

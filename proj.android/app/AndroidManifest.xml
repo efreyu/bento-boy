@@ -11,7 +11,7 @@
 
         <!-- Tell AxmolActivity the name of our .so -->
         <meta-data android:name="android.app.lib_name"
-                   android:value="bento-time-axmol" />
+                   android:value="bento-boy" />
 
         <activity
             android:name="dev.axmol.app.AppActivity"

@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_DATABASEMANAGER_H
-#define BENTO_TIME_DATABASEMANAGER_H
+#ifndef BENTO_BOY_DATABASEMANAGER_H
+#define BENTO_BOY_DATABASEMANAGER_H
 
 #include "generic/databaseModule/databaseInterface.h"
 #include "generic/databaseModule/databaseManagerInterface.h"
@@ -41,4 +41,4 @@ namespace bt::databaseModule {
 }// namespace bt::databaseModule
 
 
-#endif// BENTO_TIME_DATABASEMANAGER_H
+#endif// BENTO_BOY_DATABASEMANAGER_H

@@ -62,9 +62,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 #if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || \
     (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX)
         glView = GLViewImpl::createWithRect(
-            "bento-time-axmol", ax::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+            "bento-boy", ax::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
 #else
-        glView = GLViewImpl::create("bento-time-axmol");
+        glView = GLViewImpl::create("bento-boy");
 #endif
         director->setGLView(glView);
     }

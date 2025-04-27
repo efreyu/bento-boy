@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_CONTROLLERSTICKWIDGET_H
-#define BENTO_TIME_CONTROLLERSTICKWIDGET_H
+#ifndef BENTO_BOY_CONTROLLERSTICKWIDGET_H
+#define BENTO_BOY_CONTROLLERSTICKWIDGET_H
 
 #include "cocos2d.h"
 #include "gameplayModule/moveEnum.h"
@@ -44,4 +44,4 @@ namespace bt::interfaceModule {
 }// namespace bt::interfaceModule
 
 
-#endif// BENTO_TIME_CONTROLLERSTICKWIDGET_H
+#endif// BENTO_BOY_CONTROLLERSTICKWIDGET_H

@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_MENUBUTTON_H
-#define BENTO_TIME_MENUBUTTON_H
+#ifndef BENTO_BOY_MENUBUTTON_H
+#define BENTO_BOY_MENUBUTTON_H
 
 #include "cocos2d.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
@@ -19,4 +19,4 @@ namespace bt::interfaceModule {
 }// namespace bt::interfaceModule
 
 
-#endif// BENTO_TIME_MENUBUTTON_H
+#endif// BENTO_BOY_MENUBUTTON_H

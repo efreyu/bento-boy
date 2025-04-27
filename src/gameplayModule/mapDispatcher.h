@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_MAPDISPATCHER_H
-#define BENTO_TIME_MAPDISPATCHER_H
+#ifndef BENTO_BOY_MAPDISPATCHER_H
+#define BENTO_BOY_MAPDISPATCHER_H
 
 #include "cocos2d.h"
 #include "databaseModule/levelsTool.h"
@@ -87,4 +87,4 @@ namespace bt::gameplayModule {
 }// namespace bt::gameplayModule
 
 
-#endif// BENTO_TIME_MAPDISPATCHER_H
+#endif// BENTO_BOY_MAPDISPATCHER_H

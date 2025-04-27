@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_MOVEENUM_H
-#define BENTO_TIME_MOVEENUM_H
+#ifndef BENTO_BOY_MOVEENUM_H
+#define BENTO_BOY_MOVEENUM_H
 
 namespace bt::gameplayModule {
     enum class eMoveDirection {
@@ -11,4 +11,4 @@ namespace bt::gameplayModule {
     };
 }
 
-#endif// BENTO_TIME_MOVEENUM_H
+#endif// BENTO_BOY_MOVEENUM_H

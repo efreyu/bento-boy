@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_LEVELSDATABASE_H
-#define BENTO_TIME_LEVELSDATABASE_H
+#ifndef BENTO_BOY_LEVELSDATABASE_H
+#define BENTO_BOY_LEVELSDATABASE_H
 
 #include "generic/databaseModule/databaseInterface.h"
 #include "generic/utilityModule/jsonHelper.h"
@@ -52,4 +52,4 @@ namespace bt::databaseModule {
 }// namespace bt::databaseModule
 
 
-#endif// BENTO_TIME_LEVELSDATABASE_H
+#endif// BENTO_BOY_LEVELSDATABASE_H

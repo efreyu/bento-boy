@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_GAMEBOARD_H
-#define BENTO_TIME_GAMEBOARD_H
+#ifndef BENTO_BOY_GAMEBOARD_H
+#define BENTO_BOY_GAMEBOARD_H
 
 #include "cocos2d.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
@@ -58,4 +58,4 @@ namespace bt::gameplayModule {
 }// namespace bt::gameplayModule
 
 
-#endif// BENTO_TIME_GAMEBOARD_H
+#endif// BENTO_BOY_GAMEBOARD_H

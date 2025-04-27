@@ -9,6 +9,6 @@ if (folder.exists()) {
 
 include ':libaxmol'
 project(':libaxmol').projectDir = new File(Paths.get("${System.properties.AX_ROOT}/core/platform/android/libaxmol").toUri())
-include ':bento-time-axmol'
-project(':bento-time-axmol').projectDir = new File(settingsDir, 'app')
-rootProject.name = "bento-time-axmol"
+include ':bento-boy'
+project(':bento-boy').projectDir = new File(settingsDir, 'app')
+rootProject.name = "bento-boy"

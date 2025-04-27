@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_LEVELSTOOL_H
-#define BENTO_TIME_LEVELSTOOL_H
+#ifndef BENTO_BOY_LEVELSTOOL_H
+#define BENTO_BOY_LEVELSTOOL_H
 
 #include "base/CCMap.h"
 #include "base/CCValue.h"
@@ -67,4 +67,4 @@ namespace bt::databaseModule {
 }
 
 
-#endif// BENTO_TIME_LEVELSTOOL_H
+#endif// BENTO_BOY_LEVELSTOOL_H

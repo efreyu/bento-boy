@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_MAPOBJECTTYPES_H
-#define BENTO_TIME_MAPOBJECTTYPES_H
+#ifndef BENTO_BOY_MAPOBJECTTYPES_H
+#define BENTO_BOY_MAPOBJECTTYPES_H
 
 #include <string>
 
@@ -14,4 +14,4 @@ namespace bt::databaseModule {
     eMapObjectType getMapObjectTypeByString(const std::string& string);
 }
 
-#endif// BENTO_TIME_MAPOBJECTTYPES_H
+#endif// BENTO_BOY_MAPOBJECTTYPES_H

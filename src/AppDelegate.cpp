@@ -56,13 +56,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
     if (!glView) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         glView = GLViewImpl::createWithRect(
-          "Bento time", cocos2d::Rect(0, 0, currentResolution->size.width, currentResolution->size.height), currentResolution->scale);
+          "Bento boy", cocos2d::Rect(0, 0, currentResolution->size.width, currentResolution->size.height), currentResolution->scale);
         glView->setDesignResolutionSize(currentResolution->size.width, currentResolution->size.height, ResolutionPolicy::EXACT_FIT);
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         glView->setFrameZoomFactor(0.60f);
 #endif// end (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 #else
-        glView = GLViewImpl::create("Bento time");
+        glView = GLViewImpl::create("Bento boy");
 #endif
         director->setOpenGLView(glView);
     }

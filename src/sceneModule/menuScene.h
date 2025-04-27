@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_MENUSCENE_H
-#define BENTO_TIME_MENUSCENE_H
+#ifndef BENTO_BOY_MENUSCENE_H
+#define BENTO_BOY_MENUSCENE_H
 
 #include "cocos2d.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
@@ -66,4 +66,4 @@ namespace bt::sceneModule {
 }// namespace bt::sceneModule
 
 
-#endif// BENTO_TIME_MENUSCENE_H
+#endif// BENTO_BOY_MENUSCENE_H

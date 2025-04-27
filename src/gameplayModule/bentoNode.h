@@ -1,5 +1,5 @@
-#ifndef BENTO_TIME_BENTONODE_H
-#define BENTO_TIME_BENTONODE_H
+#ifndef BENTO_BOY_BENTONODE_H
+#define BENTO_BOY_BENTONODE_H
 
 #include "cocos2d.h"
 #include "databaseModule/mapObjectsDatabase.h"
@@ -27,4 +27,4 @@ namespace bt::gameplayModule {
 }// namespace bt::gameplayModule
 
 
-#endif// BENTO_TIME_BENTONODE_H
+#endif// BENTO_BOY_BENTONODE_H
