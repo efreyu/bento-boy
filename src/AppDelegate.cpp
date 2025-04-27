@@ -3,7 +3,7 @@
 #include "generic/coreModule/physicsShape/physicsShapeCache.h"
 #include "generic/coreModule/resources/resourceManager.h"
 #include "generic/coreModule/scenes/scenesFactoryInstance.h"
-#include "generic/debugModule/logManager.h"
+// #include "generic/debugModule/logManager.h"
 
 // all profile block header
 #include "generic/profileModule/profileManager.h"
@@ -18,7 +18,7 @@
 // widgets
 #include "interfaceModule/customNodeTypes.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace bt;
 
 AppDelegate::AppDelegate() {}
@@ -29,7 +29,7 @@ AppDelegate::~AppDelegate() {
     databaseModule::databaseManager::cleanup();
     generic::coreModule::nodeFactory::cleanup();
     generic::coreModule::scenesFactoryInstance::cleanup();
-    generic::debugModule::logManager::cleanup();
+    // generic::debugModule::logManager::cleanup();
     generic::coreModule::physicsShapeCache::cleanup();
 }
 

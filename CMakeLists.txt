@@ -29,6 +29,13 @@ set(APP_NAME bento-boy)
 
 project(${APP_NAME})
 
+if (${DEBUG})
+    add_definitions(-DDEBUG=1)
+else ()
+    add_definitions(-DRELEASE=1)
+endif ()
+add_definitions(-DGENERIC_APP_NAME="${APP_NAME}")
+
 if(XCODE)
     set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY TRUE)
 endif()
@@ -43,21 +50,32 @@ set(CMAKE_MODULE_PATH
 # NOTE: The order of the cmake module "include(AXGame...)" statements matters
 include(AXGameEngineSetup)
 
-# The common cross-platforms source files and header files
-file(GLOB_RECURSE GAME_HEADER
-    Source/*.h Source/*.hpp
-)
+# record sources, headers, resources...
+set(GAME_HEADER)
+set(GAME_SOURCE)
 
-file(GLOB_RECURSE GAME_SOURCE
-    Source/*.cpp Source/*.c
+# add cross-platforms source files and header files
+list(APPEND GAME_HEADER
+        src/AppDelegate.h
 )
+list(APPEND GAME_SOURCE
+        src/AppDelegate.cpp
+)
+# generic modules
+add_subdirectory(src/generic)
+# current game modules
+add_subdirectory(src/databaseModule)
+add_subdirectory(src/gameplayModule)
+add_subdirectory(src/interfaceModule)
+add_subdirectory(src/profileModule)
+add_subdirectory(src/sceneModule)
 
 set(GAME_INC_DIRS
-    "${CMAKE_CURRENT_SOURCE_DIR}/Source"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
 set(content_folder
-    "${CMAKE_CURRENT_SOURCE_DIR}/Content"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Resources"
 )
 
 if(APPLE)
@@ -80,7 +98,10 @@ include(AXGameTargetSetup)
 ax_setup_app_config(${APP_NAME})
 
 # Add any libraries you need to link to the project after this point
-
+target_link_libraries(${APP_NAME} ${GENERIC_LIB_NAME})
+target_include_directories(${APP_NAME} PRIVATE src)
+target_compile_features(${APP_NAME} PRIVATE cxx_std_17)
+target_compile_options(${APP_NAME} PRIVATE -Wall)
 
 # Default Platform-specific setup
 include(AXGamePlatformSetup)
