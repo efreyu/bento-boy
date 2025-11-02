@@ -1,19 +1,19 @@
 /****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Axmol Engine contributors (see AUTHORS.md).
- 
+
  https://axmol.dev/
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in
  all copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,7 +25,7 @@
 
 #include "App.h"
 
-#include "OpenGLESPage.h"
+#include "SwapChainPage.h"
 
 using namespace winrt;
 using namespace Windows::ApplicationModel;
@@ -50,14 +50,13 @@ using namespace AxmolAppWinRT::implementation;
 /// </summary>
 App::App()
 {
-    Suspending({ this, &App::OnSuspending });
-	Resuming({this, &App::OnResuming});
+    Suspending({this, &App::OnSuspending});
+    Resuming({this, &App::OnResuming});
 
     // Resuming({ this, &AppOnResuming });
 
 #if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
-    UnhandledException([this](IInspectable const&, UnhandledExceptionEventArgs const& e)
-    {
+    UnhandledException([this](IInspectable const&, UnhandledExceptionEventArgs const& e) {
         if (IsDebuggerPresent())
         {
             auto errorMessage = e.Message();
@@ -74,7 +73,7 @@ App::App()
 /// <param name="e">Details about the launch request and process.</param>
 void App::OnLaunched(LaunchActivatedEventArgs const& e)
 {
-    Frame rootFrame{ nullptr };
+    Frame rootFrame{nullptr};
     auto content = Window::Current().Content();
     if (content)
     {
@@ -89,7 +88,7 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
         // a SuspensionManager key
         rootFrame = Frame();
 
-        rootFrame.NavigationFailed({ this, &App::OnNavigationFailed });
+        rootFrame.NavigationFailed({this, &App::OnNavigationFailed});
 
         if (e.PreviousExecutionState() == ApplicationExecutionState::Terminated)
         {
@@ -105,8 +104,8 @@ void App::OnLaunched(LaunchActivatedEventArgs const& e)
             // When the navigation stack isn't restored navigate to the first page,
             // configuring the new page by passing required information as a navigation
             // parameter
-            rootFrame.Content(winrt::make<OpenGLESPage>(&mOpenGLES));
-            //rootFrame.Navigate(xaml_typename<AxmolAppWinRT::OpenGLESPage>(), box_value(e.Arguments()));
+            rootFrame.Content(winrt::make<SwapChainPage>());
+            // rootFrame.Navigate(xaml_typename<AxmolAppWinRT::SwapChainPage>(), box_value(e.Arguments()));
             mPage = rootFrame.Content();
         }
         // Place the frame in the current Window
@@ -135,11 +134,11 @@ void App::OnSuspending([[maybe_unused]] IInspectable const& sender, [[maybe_unus
 /// <param name="args">Details about the resume request.</param>
 void App::OnResuming(IInspectable const& sender, IInspectable const& args)
 {
-    (void)sender; // Unused parameter
-    (void)args; // Unused parameter
+    (void)sender;  // Unused parameter
+    (void)args;    // Unused parameter
 
     if (mPage)
-        mPage.as<OpenGLESPage>()->SetVisibility(true);
+        mPage.as<SwapChainPage>()->SetVisibility(true);
 }
 
 /// <summary>
@@ -149,5 +148,5 @@ void App::OnResuming(IInspectable const& sender, IInspectable const& args)
 /// <param name="e">Details about the navigation failure</param>
 void App::OnNavigationFailed(IInspectable const&, NavigationFailedEventArgs const& e)
 {
-    //throw hresult_error(E_FAIL, hstring(L"Failed to load Page ") + e.SourcePageType().Name);
+    // throw hresult_error(E_FAIL, hstring(L"Failed to load Page ") + e.SourcePageType().Name);
 }

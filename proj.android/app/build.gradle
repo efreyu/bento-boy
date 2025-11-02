@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply from: project(':libaxmol').projectDir.toString() + "/axmol.gradle"
+apply from: project(':libaxmol').projectDir.toString() + "/../dsl/axmol.gradle"
 
 // Resolve build profiles
 def buildProfiles = AxmolUtils.resolveBuildProfiles(project)
@@ -20,9 +20,9 @@ android {
     }
 
     defaultConfig {
-        applicationId = packageName
-        minSdkVersion = minSdk
-        targetSdkVersion = targetSdk
+        applicationId packageName
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
         versionCode 1
         versionName "1.0"
 
@@ -35,6 +35,7 @@ android {
         }
 
         ndk {
+            // noinspection ChromeOsAbiSupport
             abiFilters = __1K_ARCHS.split(':').collect{it as String}
         }
     }
@@ -68,7 +69,6 @@ android {
         release {
             debuggable false
             jniDebuggable false
-            renderscriptDebuggable false
             minifyEnabled true
             shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -81,7 +81,6 @@ android {
         debug {
             debuggable true
             jniDebuggable true
-            renderscriptDebuggable true
         }
     }
 
@@ -117,17 +116,18 @@ android.applicationVariants.configureEach { variant ->
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':libaxmol')
+
+    def appcompat_ver = buildProfiles['appcompat']
+    implementation "androidx.appcompat:appcompat:$appcompat_ver"
 }
 
 project.afterEvaluate {
     android.applicationVariants.configureEach { variant ->
         def variantName = variant.name.capitalize()
-        def externalNativeBuild = tasks.named("externalNativeBuild${variantName}")
-        if (externalNativeBuild) {
-            def copyContentToAssets = tasks.named("copy${variantName}ContentToAssets")
-            copyContentToAssets
-            copyContentToAssets.get().dependsOn externalNativeBuild
-            tasks.named("compile${variantName}JavaWithJavac").get().dependsOn copyContentToAssets
+        def copyTask = tasks.named("copy${variantName}ContentToAssets")
+
+        tasks.named("merge${variantName}Assets").configure {
+            dependsOn(copyTask)
         }
     }
 }
