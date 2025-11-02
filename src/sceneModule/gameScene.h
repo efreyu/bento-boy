@@ -1,7 +1,7 @@
 #ifndef BENTO_BOY_GAMESCENE_H
 #define BENTO_BOY_GAMESCENE_H
 
-#include "cocos2d.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include "generic/coreModule/scenes/sceneInterface.h"
 

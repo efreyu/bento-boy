@@ -13,7 +13,7 @@ const float animDelay = 0.13f;
 mapDispatcher* mapDispatcher::createWithObjectsNode(ax::Node* node, ax::TMXTiledMap* tiled, int levelId) {
     auto levelsDb = GET_DATABASE_MANAGER().getDatabase<levelsDatabase>(databaseManager::eDatabaseType::LEVELS_DB);
     if (!levelsDb->hasLevelById(levelId)) {
-        LOG_ERROR(ax::StringUtils::format("level %d not found!", levelId));
+        LOG_ERROR(fmt::format("level %d not found!", levelId));
         return nullptr;
     }
     auto levelData = levelsDb->getLevelById(levelId);
@@ -27,8 +27,8 @@ mapDispatcher* mapDispatcher::createWithObjectsNode(ax::Node* node, ax::TMXTiled
 mapDispatcher::~mapDispatcher() {
     for (auto& [_, col] : cells) {
         for (auto& [_, cell] : col) {
-            CC_SAFE_RELEASE_NULL(cell->node);
-            CC_SAFE_DELETE(cell);
+            AX_SAFE_RELEASE_NULL(cell->node);
+            AX_SAFE_DELETE(cell);
         }
     }
     cells.clear();
@@ -78,7 +78,7 @@ void mapDispatcher::loadWalls(const databaseModule::sLevelData& levelData, ax::T
     auto wallsPropPattern = levelData.wallPropPattern;
     auto wallsLayer = tiled->getLayer(wallsLayerName);
     if (!wallsLayer) {
-        LOG_ERROR(ax::StringUtils::format("wallsLayerName %s not found!", wallsLayerName.c_str()));
+        LOG_ERROR(fmt::format("wallsLayerName %s not found!", wallsLayerName.c_str()));
         return;
     }
     const auto& layerSize = wallsLayer->getLayerSize();
@@ -86,7 +86,7 @@ void mapDispatcher::loadWalls(const databaseModule::sLevelData& levelData, ax::T
     const auto wallsCount = levelTool.getWallCount();
     std::vector<std::string> wallsIds;
     for (int i = 0; i < wallsCount; ++i) {
-        wallsIds.push_back(ax::StringUtils::format(wallsPropPattern.c_str(), i));
+        wallsIds.push_back(fmt::format(fmt::runtime(wallsPropPattern), i));
     }
     for (auto x = 0; x < mapSize.first; ++x) {
         for (auto y = 0; y < mapSize.second; ++y) {
@@ -124,7 +124,7 @@ void mapDispatcher::spawnObjects(const databaseModule::sLevelData& levelData, ax
     for (const auto& item : allSpawnPos) {
         auto tile = layer->getTileAt({ static_cast<float>(item.x), static_cast<float>(item.y) });
         if (!tile) {
-            LOG_ERROR(ax::StringUtils::format("Can't find element on layer by pos %d, %d", item.x, item.y));
+            LOG_ERROR(fmt::format("Can't find element on layer by pos %d, %d", item.x, item.y));
             continue;
         }
         switch (item.type) {
@@ -145,8 +145,8 @@ void mapDispatcher::spawnObjects(const databaseModule::sLevelData& levelData, ax
             }
             unitObject->objectId = id;
             if (!mapObjectsDb->hasMapObjectById(unitObject->objectId)) {
-                LOG_ERROR(ax::StringUtils::format("Character with id '%d' not found!", unitObject->objectId));
-                CC_SAFE_DELETE(unitObject);
+                LOG_ERROR(fmt::format("Character with id '%d' not found!", unitObject->objectId));
+                AX_SAFE_DELETE(unitObject);
                 continue;
             }
             auto characterData = mapObjectsDb->getMapObjectById(unitObject->objectId);
@@ -165,8 +165,8 @@ void mapDispatcher::spawnObjects(const databaseModule::sLevelData& levelData, ax
                     playerCells.push_back(cell);
                 }
             } else {
-                LOG_ERROR(ax::StringUtils::format("Node '%d' has position same as the placed one.", unitObject->objectId));
-                CC_SAFE_DELETE(unitObject);
+                LOG_ERROR(fmt::format("Node '%d' has position same as the placed one.", unitObject->objectId));
+                AX_SAFE_DELETE(unitObject);
             }
         } break;
         case eLocationObject::LEVEL_END:

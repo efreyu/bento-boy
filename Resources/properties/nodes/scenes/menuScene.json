@@ -179,7 +179,7 @@
       "fadeTransitionTime": 0.01,
       "allowedItemCount": 5,
       "moreButtonText": "More",
-      "levelProgressPattern": "Level %d (score %d)",
+      "levelProgressPattern": "Level {} (score {})",
       "lightening": 0.3,
       "selectDuration": 1
     }

@@ -1,7 +1,7 @@
 #ifndef BENTO_BOY_CONTROLLERSTICKWIDGET_H
 #define BENTO_BOY_CONTROLLERSTICKWIDGET_H
 
-#include "cocos2d.h"
+#include "axmol/axmol.h"
 #include "gameplayModule/moveEnum.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include "generic/coreModule/nodes/types/asepriteNode.h"

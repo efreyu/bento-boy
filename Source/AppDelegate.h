@@ -23,10 +23,9 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef _APP_DELEGATE_H_
-#define _APP_DELEGATE_H_
+#pragma once
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 
 /**
 @brief    The axmol Application.
@@ -39,7 +38,7 @@ public:
     AppDelegate();
     ~AppDelegate() override;
 
-    void initGLContextAttrs() override;
+    void initContextAttrs() override;
 
     /**
     @brief    Implement Director and Scene init code here.
@@ -58,5 +57,3 @@ public:
     */
     void applicationWillEnterForeground() override;
 };
-
-#endif  // _APP_DELEGATE_H_

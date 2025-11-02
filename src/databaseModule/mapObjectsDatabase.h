@@ -1,7 +1,7 @@
 #ifndef BENTO_BOY_MAPOBJECTSDATABASE_H
 #define BENTO_BOY_MAPOBJECTSDATABASE_H
 
-#include "cocos2d.h"
+#include "axmol/axmol.h"
 #include "databaseModule/mapObjectTypes.h"
 #include "generic/databaseModule/databaseInterface.h"
 #include "generic/utilityModule/jsonHelper.h"

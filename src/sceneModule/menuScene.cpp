@@ -35,7 +35,7 @@ void menuScene::loadSettings() {
     if (!hasPropertyObject("settings"))
         return;
     const auto& json = getPropertyObject("settings");
-    auto color = ax::Color3B::BLACK;
+    auto color = ax::Color32::BLACK;
     if (json.HasMember("bgColor") && json["bgColor"].IsArray()) {
         color.r = static_cast<uint8_t>(json["bgColor"][0u].GetInt());
         color.g = static_cast<uint8_t>(json["bgColor"][1u].GetInt());
@@ -125,7 +125,7 @@ void menuScene::onSceneLoading() {
 void menuScene::initMenu(const std::string& path) {
     auto data = GET_JSON(path);
     if (data.HasParseError() || !data.IsObject()) {
-        LOG_ERROR(ax::StringUtils::format("Can't read file %s.", path.c_str()));
+        LOG_ERROR(fmt::format("Can't read file %s.", path.c_str()));
         return;
     }
     for (auto it = data.MemberBegin(); it != data.MemberEnd(); ++it) {
@@ -173,7 +173,7 @@ void menuScene::initMenu(const std::string& path) {
     auto levelDb = GET_DATABASE_MANAGER().getDatabase<levelsDatabase>(databaseManager::eDatabaseType::LEVELS_DB);
     for (const auto& [id, info] : levelDb->getLevels()) {
         if (page->buttons.size() > settings.allowedItemCount) {
-            auto newId = ax::StringUtils::format("%s_%d", menuTypes[eMenuPageType::PLAY].c_str(), id);
+            auto newId = fmt::format("%s_%d", menuTypes[eMenuPageType::PLAY].c_str(), id);
             auto button = std::make_shared<menuItem>();
             button->text = settings.moreButtonText;
             button->type = newId;
@@ -192,7 +192,7 @@ void menuScene::initMenu(const std::string& path) {
         auto button = std::make_shared<menuItem>();
         auto progress = progressBlock->getProgressForLevel(id);
         if (progress && !settings.levelProgressPattern.empty()) {
-            button->text = ax::StringUtils::format(settings.levelProgressPattern.c_str(), id, progress->getMoves());
+            button->text = fmt::format(fmt::runtime(settings.levelProgressPattern), id, progress->getMoves());
         } else {
             button->text = std::to_string(id);
         }

@@ -23,7 +23,7 @@
       "spawnLayer": "spawnLayer",
       "backgroundLayer": "background_ground",
       "wallsLayer": "wallsLayer",
-      "wallPropPattern": "wall%d"
+      "wallPropPattern": "wall{}"
     },
     {
       "id": 2,
@@ -32,7 +32,7 @@
       "spawnLayer": "spawnLayer",
       "backgroundLayer": "background_ground",
       "wallsLayer": "wallsLayer",
-      "wallPropPattern": "wall%d"
+      "wallPropPattern": "wall{}"
     },
     {
       "id": 3,
@@ -41,7 +41,7 @@
       "spawnLayer": "spawnLayer",
       "backgroundLayer": "background_ground",
       "wallsLayer": "wallsLayer",
-      "wallPropPattern": "wall%d"
+      "wallPropPattern": "wall{}"
     },
     {
       "id": 4,
@@ -50,7 +50,7 @@
       "spawnLayer": "spawnLayer",
       "backgroundLayer": "background_ground",
       "wallsLayer": "wallsLayer",
-      "wallPropPattern": "wall%d"
+      "wallPropPattern": "wall{}"
     },
 
     {
@@ -60,7 +60,7 @@
       "spawnLayer": "spawnLayer",
       "backgroundLayer": "background_ground",
       "wallsLayer": "wallsLayer",
-      "wallPropPattern": "wall%d"
+      "wallPropPattern": "wall{}"
     },
     {
       "id": 6,
@@ -69,7 +69,7 @@
       "spawnLayer": "spawnLayer",
       "backgroundLayer": "background_ground",
       "wallsLayer": "wallsLayer",
-      "wallPropPattern": "wall%d"
+      "wallPropPattern": "wall{}"
     },
     {
       "id": 7,
@@ -78,7 +78,7 @@
       "spawnLayer": "spawnLayer",
       "backgroundLayer": "background_ground",
       "wallsLayer": "wallsLayer",
-      "wallPropPattern": "wall%d"
+      "wallPropPattern": "wall{}"
     },
     {
       "id": 8,
@@ -87,7 +87,7 @@
       "spawnLayer": "spawnLayer",
       "backgroundLayer": "background_ground",
       "wallsLayer": "wallsLayer",
-      "wallPropPattern": "wall%d"
+      "wallPropPattern": "wall{}"
     },
     {
       "id": 9,
@@ -96,7 +96,7 @@
       "spawnLayer": "spawnLayer",
       "backgroundLayer": "background_ground",
       "wallsLayer": "wallsLayer",
-      "wallPropPattern": "wall%d"
+      "wallPropPattern": "wall{}"
     },
     {
       "id": 10,
@@ -105,7 +105,7 @@
       "spawnLayer": "spawnLayer",
       "backgroundLayer": "background_ground",
       "wallsLayer": "wallsLayer",
-      "wallPropPattern": "wall%d"
+      "wallPropPattern": "wall{}"
     }
   ]
 }

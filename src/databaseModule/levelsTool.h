@@ -1,11 +1,11 @@
 #ifndef BENTO_BOY_LEVELSTOOL_H
 #define BENTO_BOY_LEVELSTOOL_H
 
-#include "base/Map.h"
-#include "base/Value.h"
-#include "base/Vector.h"
+#include "axmol/base/Map.h"
+#include "axmol/base/Value.h"
+#include "axmol/base/Vector.h"
 #include "databaseModule/levelsDatabase.h"
-#include "platform/SAXParser.h"
+#include "axmol/platform/SAXParser.h"
 #include <map>
 #include <string>
 

@@ -61,8 +61,8 @@
       }
     },
     "settings": {
-      "movesPattern": "Moves:%d",
-      "levelsPattern": "Level:%d",
+      "movesPattern": "Moves:{}",
+      "levelsPattern": "Level:{}",
       "fadeDuration": 0.75,
       "delayDuration": 1.2
     }

@@ -54,7 +54,7 @@ gameBoard::~gameBoard() {
 void gameBoard::loadLevel(int id) {
     auto levelsDb = GET_DATABASE_MANAGER().getDatabase<levelsDatabase>(databaseManager::eDatabaseType::LEVELS_DB);
     if (!levelsDb->hasLevelById(id)) {
-        LOG_ERROR(ax::StringUtils::format("level %d not found!", id));
+        LOG_ERROR(fmt::format("level %d not found!", id));
         GET_SCENES_FACTORY().runScene("menuScene");
         return;
     }
@@ -117,7 +117,7 @@ void gameBoard::loadLevel(int id) {
     updateMovesScore();
     if (levelsLabel) {
         if (!settings.levelsPattern.empty()) {
-            levelsLabel->setString(ax::StringUtils::format(settings.levelsPattern.c_str(), currentLevel));
+            levelsLabel->setString(fmt::format(fmt::runtime(settings.levelsPattern), currentLevel));
         } else {
             levelsLabel->setString(std::to_string(currentLevel));
         }
@@ -142,7 +142,7 @@ void gameBoard::attachController(interfaceModule::sControllerStickEvents* emitte
 void gameBoard::updateMovesScore() {
     if (movesLabel) {
         if (!settings.movesPattern.empty()) {
-            movesLabel->setString(ax::StringUtils::format(settings.movesPattern.c_str(), movesCnt));
+            movesLabel->setString(fmt::format(fmt::runtime(settings.movesPattern), movesCnt));
         } else {
             movesLabel->setString(std::to_string(movesCnt));
         }

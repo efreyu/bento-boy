@@ -1,6 +1,5 @@
 #include "AppDelegate.h"
 #include "generic/audioModule/audioEngineInstance.h"
-#include "generic/coreModule/physicsShape/physicsShapeCache.h"
 #include "generic/coreModule/resources/resourceManager.h"
 #include "generic/coreModule/scenes/scenesFactoryInstance.h"
 // #include "generic/debugModule/logManager.h"
@@ -18,8 +17,10 @@
 // widgets
 #include "interfaceModule/customNodeTypes.h"
 
-USING_NS_AX;
+using namespace ax;
 using namespace bt;
+
+#define USE_VR_RENDERER  0
 
 AppDelegate::AppDelegate() {}
 
@@ -30,58 +31,65 @@ AppDelegate::~AppDelegate() {
     generic::coreModule::nodeFactory::cleanup();
     generic::coreModule::scenesFactoryInstance::cleanup();
     // generic::debugModule::logManager::cleanup();
-    generic::coreModule::physicsShapeCache::cleanup();
 }
 
-// if you want a different context, modify the value of glContextAttrs
+// if you want a different context, modify the value of contextAttrs
 // it will affect all platforms
-void AppDelegate::initGLContextAttrs() {
-    // set OpenGL context attributes: red,green,blue,alpha,depth,stencil,multisamplesCount
-    GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 24, 8, 0 };
+void AppDelegate::initContextAttrs()
+{
+    // set app context attributes: red,green,blue,alpha,depth,stencil,multisamplesCount
+    // powerPreference only affect when RHI backend is D3D
+    ContextAttrs contextAttrs = {.powerPreference = PowerPreference::HighPerformance};
 
-    GLView::setGLContextAttrs(glContextAttrs);
+    // V-Sync is enabled by default since axmol 2.2.
+    // Uncomment to disable V-Sync and unlock FPS.
+    // contextAttrs.vsync = false;
+
+    // Enable high-DPI scaling support (non-Windows platforms only)
+    // Note: cpp-tests keep the default render mode to ensure consistent performance benchmarks
+#if AX_TARGET_PLATFORM != AX_PLATFORM_WIN32
+    contextAttrs.renderScaleMode = RenderScaleMode::Physical;
+#endif
+    setContextAttrs(contextAttrs);
 }
 
-bool AppDelegate::applicationDidFinishLaunching() {
+bool AppDelegate::applicationDidFinishLaunching()
+{
     auto setting = GET_RESOLUTION_SETTING();
     setting->load();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX)
     setting->init(false, "640x1136");// default development resolution
 #else
     setting->init(true);
 #endif
     auto currentResolution = setting->getCurrentSize();
     auto director = Director::getInstance();
-    auto glView = director->getGLView();
-    if (!glView) {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glView = GLViewImpl::createWithRect(
-          "Bento boy", ax::Rect(0, 0, currentResolution->size.width, currentResolution->size.height), currentResolution->scale);
-        glView->setDesignResolutionSize(currentResolution->size.width, currentResolution->size.height, ResolutionPolicy::EXACT_FIT);
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glView->setFrameZoomFactor(0.60f);
-#endif// end (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+    auto renderView = director->getRenderView();
+    if (!renderView)
+    {
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || \
+(AX_TARGET_PLATFORM == AX_PLATFORM_LINUX)
+        renderView = RenderViewImpl::createWithRect(
+            "Bento boy", ax::Rect(0, 0, currentResolution->size.x, currentResolution->size.y));
 #else
-        glView = GLViewImpl::create("Bento boy");
+        renderView = RenderViewImpl::create("Bento boy");
 #endif
-        director->setGLView(glView);
+        director->setRenderView(renderView);
     }
+#if USE_VR_RENDERER && defined(AX_ENABLE_VR)
+    auto vrRenderer = std::make_unique<VRGenericRenderer>();
+    // On Android/iOS emulator devices, uncomment to visualize the left/right eye VR rendering output.
+    // Useful for debugging stereo rendering without a physical headset.
+    // vrRenderer->setDebugIgnoreHeadTracker(true);
+    renderView->setVR(std::move(vrRenderer));
+#endif
 
     // turn on display FPS
-    director->setDisplayStats(currentResolution->showStats);
+    director->setStatsDisplay(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
-
-    // set project view mode
     director->setProjection(Director::Projection::_3D);
-    // ax::Sprite::setUsePixelModeGlobal(currentResolution->spritePixel);
-    // Set the design resolution
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-    director->setContentScaleFactor(1.f);
-#else
-    glView->setDesignResolutionSize(currentResolution->size.width, currentResolution->size.height, ResolutionPolicy::EXACT_FIT);
-#endif
 
     GET_AUDIO_ENGINE().stopAll();
     // register all profile
@@ -106,9 +114,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // register all states
     GET_SCENES_FACTORY().registerScene("menuScene", []() {
         return new sceneModule::menuScene();
+        // return utils::createInstance<sceneModule::menuScene>();
     });
     GET_SCENES_FACTORY().registerScene("gameScene", []() {
         return new sceneModule::gameScene();
+        // return utils::createInstance<sceneModule::gameScene>();
     });
 
     // run first scene

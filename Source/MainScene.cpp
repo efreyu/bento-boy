@@ -133,7 +133,7 @@ bool MainScene::init()
         drawNode->setPosition(Vec2(0, 0));
         addChild(drawNode);
 
-        drawNode->drawRect(safeArea.origin + Vec2(1, 1), safeArea.origin + safeArea.size, Color4F::BLUE);
+        drawNode->drawRect(safeArea.origin + Vec2(1, 1), safeArea.origin + safeArea.size, Color::BLUE);
     }
 
     // scheduleUpdate() is required to ensure update(float) is called on every loop
@@ -166,28 +166,32 @@ void MainScene::onTouchesEnded(const std::vector<ax::Touch*>& touches, ax::Event
     }
 }
 
-void MainScene::onMouseDown(Event* event)
+bool MainScene::onMouseDown(Event* event)
 {
     EventMouse* e = static_cast<EventMouse*>(event);
-    // AXLOGD("onMouseDown detected, Key: %d", static_cast<int>(e->getMouseButton()));
+    // AXLOGD("onMouseDown detected, button: {}", static_cast<int>(e->getMouseButton()));
+    return true;
 }
 
-void MainScene::onMouseUp(Event* event)
+bool MainScene::onMouseUp(Event* event)
 {
     EventMouse* e = static_cast<EventMouse*>(event);
-    AXLOGD("onMouseUp detected, Key: %d", static_cast<int>(e->getMouseButton()));
+    AXLOGD("onMouseUp detected, button: {}", static_cast<int>(e->getMouseButton()));
+    return true;
 }
 
-void MainScene::onMouseMove(Event* event)
+bool MainScene::onMouseMove(Event* event)
 {
     EventMouse* e = static_cast<EventMouse*>(event);
-    // AXLOGD("onMouseMove detected, X:{}  Y:{}", e->getCursorX(), e->getCursorY());
+    // AXLOGD("onMouseMove detected, X:{}  Y:{}", e->getLocation().x, e->getLocation().y);
+    return true;
 }
 
-void MainScene::onMouseScroll(Event* event)
+bool MainScene::onMouseScroll(Event* event)
 {
     EventMouse* e = static_cast<EventMouse*>(event);
     // AXLOGD("onMouseScroll detected, X:{}  Y:{}", e->getScrollX(), e->getScrollY());
+    return true;
 }
 
 void MainScene::onKeyPressed(EventKeyboard::KeyCode code, Event* event)
@@ -197,7 +201,7 @@ void MainScene::onKeyPressed(EventKeyboard::KeyCode code, Event* event)
 
 void MainScene::onKeyReleased(EventKeyboard::KeyCode code, Event* event)
 {
-    AXLOGD("onKeyReleased, keycode: %d", static_cast<int>(code));
+    AXLOGD("onKeyReleased, keycode: {}", static_cast<int>(code));
 }
 
 void MainScene::update(float delta)

@@ -1,7 +1,7 @@
 #ifndef BENTO_BOY_MENUSCENE_H
 #define BENTO_BOY_MENUSCENE_H
 
-#include "cocos2d.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include "generic/coreModule/scenes/sceneInterface.h"
 #include <string>
@@ -36,7 +36,7 @@ namespace bt::sceneModule {
         bool selected = false;
         std::function<void()> clb = nullptr;
         ~sActiveMenu() {
-            CC_SAFE_RELEASE(node);
+            AX_SAFE_RELEASE(node);
         }
     };
 

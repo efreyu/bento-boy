@@ -1,7 +1,7 @@
 #ifndef BENTO_BOY_MAPDISPATCHER_H
 #define BENTO_BOY_MAPDISPATCHER_H
 
-#include "cocos2d.h"
+#include "axmol/axmol.h"
 #include "databaseModule/levelsTool.h"
 #include "generic/coreModule/signals/signalHolder.h"
 #include "moveEnum.h"

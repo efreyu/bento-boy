@@ -1,7 +1,7 @@
 #ifndef BENTO_BOY_BENTONODE_H
 #define BENTO_BOY_BENTONODE_H
 
-#include "cocos2d.h"
+#include "axmol/axmol.h"
 #include "databaseModule/mapObjectsDatabase.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include <string>

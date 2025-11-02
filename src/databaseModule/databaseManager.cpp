@@ -1,5 +1,5 @@
 #include "databaseManager.h"
-#include "cocos2d.h"
+#include "axmol/axmol.h"
 
 using namespace bt::databaseModule;
 
@@ -28,7 +28,7 @@ void databaseManager::create() {
 }
 
 void databaseManager::onDeadReference() {
-    CCASSERT(false, "Founded dead reference!");
+    AXASSERT(false, "Founded dead reference!");
 }
 
 void databaseManager::addDatabase(databaseManager::eDatabaseType id,

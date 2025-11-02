@@ -23,10 +23,9 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __MAIN_SCENE_H__
-#define __MAIN_SCENE_H__
+#pragma once
 
-#include "axmol.h"
+#include "axmol/axmol.h"
 
 class MainScene : public ax::Scene
 {
@@ -50,10 +49,10 @@ public:
     void onTouchesEnded(const std::vector<ax::Touch*>& touches, ax::Event* event);
 
     // mouse
-    void onMouseDown(ax::Event* event);
-    void onMouseUp(ax::Event* event);
-    void onMouseMove(ax::Event* event);
-    void onMouseScroll(ax::Event* event);
+    bool onMouseDown(ax::Event* event);
+    bool onMouseUp(ax::Event* event);
+    bool onMouseMove(ax::Event* event);
+    bool onMouseScroll(ax::Event* event);
 
     // Keyboard
     void onKeyPressed(ax::EventKeyboard::KeyCode code, ax::Event* event);
@@ -72,5 +71,3 @@ private:
     ax::EventListenerMouse* _mouseListener          = nullptr;
     int _sceneID                                    = 0;
 };
-
-#endif  // __MAIN_SCENE_H__

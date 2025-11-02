@@ -13,7 +13,7 @@ gameScene::gameScene() {
     if (!hasPropertyObject("settings"))
         return;
     const auto& json = getPropertyObject("settings");
-    auto color = ax::Color3B::BLACK;
+    auto color = ax::Color32::BLACK;
     if (json.HasMember("bgColor") && json["bgColor"].IsArray()) {
         color.r = static_cast<uint8_t>(json["bgColor"][0u].GetInt());
         color.g = static_cast<uint8_t>(json["bgColor"][1u].GetInt());

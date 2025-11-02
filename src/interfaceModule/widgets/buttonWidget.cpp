@@ -1,7 +1,7 @@
 #include "buttonWidget.h"
 #include "generic/utilityModule/convertUtility.h"
 #include "generic/utilityModule/findUtility.h"
-#include "ui/CocosGUI.h"
+#include "axmol/ui/CocosGUI.h"
 
 using namespace bt::interfaceModule;
 using namespace generic::utilityModule;
