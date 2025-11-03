@@ -98,8 +98,8 @@ bool controllerStickWidget::touchProceed(ax::Touch* touch, ax::Event* event) {
     auto touchLocation = event->getCurrentTarget()->convertToNodeSpace(touch->getLocation());
     for (const auto& [direction, buttonNode] : nodesWithDirections) {
         auto boundingBox = buttonNode->getBoundingBox();
-        boundingBox.origin.x += boundingBox.size.width * buttonNode->getAnchorPoint().x + boundingBox.size.width;/* * buttonNode->getPivotPoint().x;*/
-        boundingBox.origin.y += boundingBox.size.height * buttonNode->getAnchorPoint().y + boundingBox.size.height;/* * buttonNode->getPivotPoint().y;*/
+        boundingBox.origin.x += boundingBox.size.width * buttonNode->getAnchorPoint().x + boundingBox.size.width * buttonNode->getPivotPoint().x;
+        boundingBox.origin.y += boundingBox.size.height * buttonNode->getAnchorPoint().y + boundingBox.size.height * buttonNode->getPivotPoint().y;
         bool correctNode = boundingBox.containsPoint(touchLocation);
         if (!correctNode)
             continue;

@@ -27,7 +27,7 @@ void levelsDatabase::load(const rapidjson::Document& data) {
         return;
     }
     if (!data.IsObject()) {
-        LOG_ERROR(CSTRING_FORMAT("File from path %s is not object!", getPath().c_str()));
+        LOG_ERROR(STRING_FORMAT("File from path {} is not object!", getPath()));
         return;
     }
     auto levels = data.FindMember("levels");

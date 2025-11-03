@@ -19,7 +19,7 @@ void mapObjectsDatabase::load(const rapidjson::Document& json) {
         return;
     }
     if (!json.IsObject()) {
-        LOG_ERROR(CSTRING_FORMAT("File from path '%s' is not object!", getPath().c_str()));
+        LOG_ERROR(STRING_FORMAT("File from path '{}' is not object!", getPath()));
         return;
     }
     auto mObject = json.FindMember("mapObjects");

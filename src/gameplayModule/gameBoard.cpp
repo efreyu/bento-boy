@@ -54,7 +54,7 @@ gameBoard::~gameBoard() {
 void gameBoard::loadLevel(int id) {
     auto levelsDb = GET_DATABASE_MANAGER().getDatabase<levelsDatabase>(databaseManager::eDatabaseType::LEVELS_DB);
     if (!levelsDb->hasLevelById(id)) {
-        LOG_ERROR(fmt::format("level %d not found!", id));
+        LOG_ERROR(fmt::format("level {} not found!", id));
         GET_SCENES_FACTORY().runScene("menuScene");
         return;
     }

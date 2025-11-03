@@ -125,7 +125,7 @@ void menuScene::onSceneLoading() {
 void menuScene::initMenu(const std::string& path) {
     auto data = GET_JSON(path);
     if (data.HasParseError() || !data.IsObject()) {
-        LOG_ERROR(fmt::format("Can't read file %s.", path.c_str()));
+        LOG_ERROR(fmt::format("Can't read file {}.", path.c_str()));
         return;
     }
     for (auto it = data.MemberBegin(); it != data.MemberEnd(); ++it) {
@@ -173,7 +173,7 @@ void menuScene::initMenu(const std::string& path) {
     auto levelDb = GET_DATABASE_MANAGER().getDatabase<levelsDatabase>(databaseManager::eDatabaseType::LEVELS_DB);
     for (const auto& [id, info] : levelDb->getLevels()) {
         if (page->buttons.size() > settings.allowedItemCount) {
-            auto newId = fmt::format("%s_%d", menuTypes[eMenuPageType::PLAY].c_str(), id);
+            auto newId = fmt::format("{}_{}", menuTypes[eMenuPageType::PLAY], id);
             auto button = std::make_shared<menuItem>();
             button->text = settings.moreButtonText;
             button->type = newId;
