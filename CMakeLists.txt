@@ -57,7 +57,7 @@ set(content_folder
 if(APPLE)
   ax_mark_multi_resources(common_content_files RES_TO "Resources" FOLDERS ${content_folder})
 elseif(WINDOWS)
-  ax_mark_multi_resources(common_content_files RES_TO "Content" FOLDERS ${content_folder})
+  ax_mark_multi_resources(common_content_files RES_TO "Resources" FOLDERS ${content_folder})
 endif()
 
 include(AXGameSourceSetup)
