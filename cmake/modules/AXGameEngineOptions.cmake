@@ -30,8 +30,8 @@
 # set(AX_ENABLE_EXT_PHYSICS_NODE ON CACHE BOOL "Build extension physics-nodes" FORCE)
 
 # These depend on AX_EXT_HINT & AX_ENABLE_EXT_IMGUI - default: ON
-# set(AX_ENABLE_EXT_INSPECTOR ON CACHE BOOL "Enable extension Inspector" FORCE)
-# set(AX_ENABLE_EXT_SDFGEN ON CACHE BOOL "Build extension SDFGen" FORCE)
+set(AX_ENABLE_EXT_INSPECTOR ON CACHE BOOL "Enable extension Inspector" FORCE)
+set(AX_ENABLE_EXT_SDFGEN ON CACHE BOOL "Build extension SDFGen" FORCE)
 
 # The follow options are set individually - default: OFF
 # set(AX_ENABLE_EXT_LIVE2D OFF CACHE BOOL "Build extension Live2D" FORCE)
