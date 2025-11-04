@@ -54,7 +54,7 @@ void controllerStickWidget::initHandler() {
         auto keyboardDir = eMoveDirection::UNDEFINED;
         switch (keyCode) {
         case ax::EventKeyboard::KeyCode::KEY_UP_ARROW:
-        case ax::EventKeyboard::KeyCode::KEY_W: {}
+        case ax::EventKeyboard::KeyCode::KEY_W:
             keyboardDir = eMoveDirection::UP;
             break;
         case ax::EventKeyboard::KeyCode::KEY_DOWN_ARROW:

@@ -130,13 +130,17 @@ void gameBoard::attachController(interfaceModule::sControllerStickEvents* emitte
             dispatcher->move(direction);
     });
     replayBtn->setOnTouchBegan([this](){
-        if (!boardBlocked) {
-            boardBlocked = true;
-            runHideAnimation([this](){
-                loadLevel(currentLevel);
-            });
-        }
+        reloadLevel();
     });
+}
+
+void gameBoard::reloadLevel() {
+    if (!boardBlocked) {
+        boardBlocked = true;
+        runHideAnimation([this](){
+            loadLevel(currentLevel);
+        });
+    }
 }
 
 void gameBoard::updateMovesScore() {

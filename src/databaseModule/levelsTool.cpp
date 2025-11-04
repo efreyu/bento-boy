@@ -76,7 +76,7 @@ std::vector<sObjectData> levelsTool::getAllObjects(ax::TMXTiledMap* map, const s
                           static_cast<int>((mapVal["localY"].asFloat() + mapVal["height"].asFloat() / 2) / map->getTileSize().height);
                         result.push_back(data);
                     } else {
-                        LOG_ERROR(STRING_FORMAT("Object have incorrect type '{}'", mapVal["type"].asString()));
+                        LOG_ERROR(fmt::format("Object have incorrect type '{}'", mapVal["type"].asString()));
                     }
                 }
             }

@@ -75,6 +75,10 @@ namespace bt::sceneModule {
             float selectDuration = .1f;
         };
         menuSceneSettings settings;
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+        ax::EventListenerKeyboard* keyboardListener = nullptr;
+#endif
     };
 }// namespace bt::sceneModule
 

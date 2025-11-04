@@ -120,6 +120,34 @@ void menuScene::onSceneLoading() {
         GET_SCENES_FACTORY().runScene("menuScene");
     });
     loadPage(menuTypes[eMenuPageType::MAIN_MENU]);
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+    keyboardListener = ax::EventListenerKeyboard::create();
+    keyboardListener->onKeyPressed = [this](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
+        switch (keyCode) {
+        case ax::EventKeyboard::KeyCode::KEY_SPACE:
+        case ax::EventKeyboard::KeyCode::KEY_ESCAPE:
+        case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
+            GET_SCENES_FACTORY().runScene("menuScene");
+            break;
+        case ax::EventKeyboard::KeyCode::KEY_ENTER: {
+            if (menuList.empty())
+                return;
+            auto menuListIt = std::find_if(menuList.begin(), menuList.end(), [](const std::shared_ptr<sActiveMenu>& a){
+                return a->selected;
+            });
+            if (menuListIt != menuList.end() && menuListIt->get()->clb) {
+                menuListIt->get()->clb();
+            }
+        }
+            break;
+        default:
+            break;
+        }
+    };
+    GET_CURRENT_SCENE()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+
+#endif
 }
 
 void menuScene::initMenu(const std::string& path) {
@@ -291,7 +319,7 @@ void menuScene::loadPage(const std::string& page) {
     }
 
     if (!pagePtr->hintText.empty()) {
-        auto tipsLabel = ax::Label::create();
+        auto tipsLabel = ax::Label::createWithTTF(pagePtr->hintText, "fonts/VT323-Regular.ttf", 50.f);
         tipsLabel->setName("tipsLabel");
         loadProperty(tipsLabel, "tipsLabel");
         tipsLabel->setString(pagePtr->hintText);

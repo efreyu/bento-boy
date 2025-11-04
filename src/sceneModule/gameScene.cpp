@@ -50,4 +50,24 @@ void gameScene::onSceneLoading() {
         GET_SCENES_FACTORY().runScene("menuScene");
     });
     board->attachController(controllerNode->getEmitter(), buttonA);
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+    keyboardListener = ax::EventListenerKeyboard::create();
+    keyboardListener->onKeyPressed = [this, board](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
+        switch (keyCode) {
+        case ax::EventKeyboard::KeyCode::KEY_SPACE:
+        case ax::EventKeyboard::KeyCode::KEY_ESCAPE:
+        case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
+            GET_SCENES_FACTORY().runScene("menuScene");
+            break;
+        case ax::EventKeyboard::KeyCode::KEY_ENTER:
+            board->reloadLevel();
+            break;
+        default:
+            break;
+        }
+    };
+    GET_CURRENT_SCENE()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+
+#endif
 }

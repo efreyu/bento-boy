@@ -31,6 +31,7 @@ namespace bt::gameplayModule {
             return tiledMap;
         }
         void attachController(interfaceModule::sControllerStickEvents* emitter, generic::coreModule::eventNode* replayBtn);
+        void reloadLevel();
 
     private:
         void loadSettings();
