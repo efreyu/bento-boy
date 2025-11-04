@@ -60,7 +60,6 @@ void gameBoard::loadLevel(int id) {
     }
     if (tiledMap) {
         tiledMap->removeFromParentAndCleanup(true);
-        delete tiledMap;
         tiledMap = nullptr;
     }
     currentLevel = id;
@@ -85,7 +84,6 @@ void gameBoard::loadLevel(int id) {
 
     if (auto objectsLayer = findNode(gameFieldNode, "objectsLayer")) {
         objectsLayer->removeFromParentAndCleanup(true);
-        delete objectsLayer;
         objectsLayer = nullptr;
     }
     auto objectsLayer = new generic::coreModule::node3d();

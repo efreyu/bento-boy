@@ -31,14 +31,14 @@
 
 # These depend on AX_EXT_HINT & AX_ENABLE_EXT_IMGUI - default: ON
 set(AX_ENABLE_EXT_INSPECTOR ON CACHE BOOL "Enable extension Inspector" FORCE)
-set(AX_ENABLE_EXT_SDFGEN ON CACHE BOOL "Build extension SDFGen" FORCE)
+set(AX_ENABLE_EXT_SDFGEN OFF CACHE BOOL "Build extension SDFGen" FORCE)
 
 # The follow options are set individually - default: OFF
 # set(AX_ENABLE_EXT_LIVE2D OFF CACHE BOOL "Build extension Live2D" FORCE)
 # set(AX_ENABLE_EXT_EFFEKSEER OFF CACHE BOOL "Build extension Effekseer" FORCE)
 
 # Code modules that can be disabled - default: ON
-# set(AX_ENABLE_AUDIO ON CACHE BOOL "Build audio support" FORCE)
+ set(AX_ENABLE_AUDIO ON CACHE BOOL "Build audio support" FORCE)
  set(AX_ENABLE_WEBSOCKET OFF CACHE BOOL "Build Websocket client based on yasio" FORCE)
  set(AX_ENABLE_HTTP OFF CACHE BOOL "Build HTTP client based on yasio" FORCE)
  set(AX_ENABLE_OPUS ON CACHE BOOL "Build with opus support" FORCE)
