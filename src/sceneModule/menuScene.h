@@ -8,6 +8,9 @@
 #include <map>
 #include <vector>
 #include <memory>
+// #ifdef AX_ENABLE_EXT_INSPECTOR
+#include "Inspector/Inspector.h"
+// #endif
 
 namespace bt::sceneModule {
 
@@ -46,6 +49,16 @@ namespace bt::sceneModule {
     public:
         menuScene();
         void onSceneLoading() override;
+// #ifdef AX_ENABLE_EXT_INSPECTOR
+        void onEnter() override {
+            generic::coreModule::sceneInterface::onEnter();
+            ax::extension::Inspector::getInstance()->openForScene(this);
+        }
+        void onExit() override {
+            ax::extension::Inspector::getInstance()->close();
+            generic::coreModule::sceneInterface::onExit();
+        }
+// #endif
 
     private:
         void loadSettings();
