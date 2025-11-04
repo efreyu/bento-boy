@@ -7,7 +7,7 @@
   "props": {
     "bentoNode": {
       "transformProperty": {
-        "anchor": [0.0, 0.0],
+        "anchor": [0.5, 0.5],
         "pivot": [0.0, 0.0]
       }
     }

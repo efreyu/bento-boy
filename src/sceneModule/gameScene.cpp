@@ -57,7 +57,7 @@ void gameScene::onSceneLoading() {
         switch (keyCode) {
         case ax::EventKeyboard::KeyCode::KEY_SPACE:
         case ax::EventKeyboard::KeyCode::KEY_ESCAPE:
-        case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
+        // case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
             GET_SCENES_FACTORY().runScene("menuScene");
             break;
         case ax::EventKeyboard::KeyCode::KEY_ENTER:
