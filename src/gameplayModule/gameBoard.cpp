@@ -135,9 +135,10 @@ void gameBoard::attachController(interfaceModule::sControllerStickEvents* emitte
 void gameBoard::reloadLevel() {
     if (!boardBlocked) {
         boardBlocked = true;
-        runHideAnimation([this](){
-            loadLevel(currentLevel);
-        });
+        // runHideAnimation([this](){
+            // loadLevel(currentLevel);
+        // });
+        loadLevel(currentLevel);
     }
 }
 
