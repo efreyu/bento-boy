@@ -43,10 +43,10 @@ void bentoNode::initWithData(const databaseModule::sMapObjectsData& data) {
 }
 
 void bentoNode::setAnimation(eBentoAnimation type) {
-    // if (lastAnimation != eBentoAnimation::WIN) {
-        // lastAnimation = type;
-        // if (auto asepriteNode = dynamic_cast<generic::coreModule::asepriteNode*>(findNode(this, "asepriteNode"))) {
-            // asepriteNode->setAnimation(animationTypes[type], true);
-        // }
-    // }
+    if (lastAnimation != eBentoAnimation::WIN) {
+        lastAnimation = type;
+        if (auto asepriteNode = dynamic_cast<generic::coreModule::asepriteNode*>(findNode(this, "asepriteNode"))) {
+            asepriteNode->setAnimation(animationTypes[type], true);
+        }
+    }
 }
