@@ -22,6 +22,8 @@ namespace bt::interfaceModule {
         void updateSettings() override;
         eventTouchClb getOnTouchBegan() override;
         eventTouchClb getOnTouchEnded() override;
+        void runTouchStart();
+        void runTouchEnd();
 
     private:
         void updateButton(eControllerButtonType _buttonType, eControllerIconType iconType, const std::string& iconAnimation = "");

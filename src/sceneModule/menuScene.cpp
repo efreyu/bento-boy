@@ -121,24 +121,32 @@ void menuScene::onSceneLoading() {
     });
     loadPage(menuTypes[eMenuPageType::MAIN_MENU]);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX) || (AX_TARGET_PLATFORM == AX_PLATFORM_EMSCRIPTEN)
     keyboardListener = ax::EventListenerKeyboard::create();
-    keyboardListener->onKeyPressed = [this](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
+    keyboardListener->onKeyPressed = [buttonA, buttonB](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
         switch (keyCode) {
         case ax::EventKeyboard::KeyCode::KEY_SPACE:
         case ax::EventKeyboard::KeyCode::KEY_ESCAPE:
         case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
-            GET_SCENES_FACTORY().runScene("menuScene");
+            buttonB->runTouchStart();
             break;
         case ax::EventKeyboard::KeyCode::KEY_ENTER: {
-            if (menuList.empty())
-                return;
-            auto menuListIt = std::find_if(menuList.begin(), menuList.end(), [](const std::shared_ptr<sActiveMenu>& a){
-                return a->selected;
-            });
-            if (menuListIt != menuList.end() && menuListIt->get()->clb) {
-                menuListIt->get()->clb();
-            }
+            buttonA->runTouchStart();
+        }
+            break;
+        default:
+            break;
+        }
+    };
+    keyboardListener->onKeyReleased = [buttonA, buttonB](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
+        switch (keyCode) {
+        case ax::EventKeyboard::KeyCode::KEY_SPACE:
+        case ax::EventKeyboard::KeyCode::KEY_ESCAPE:
+        case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
+            buttonB->runTouchEnd();
+            break;
+        case ax::EventKeyboard::KeyCode::KEY_ENTER: {
+            buttonA->runTouchEnd();
         }
             break;
         default:

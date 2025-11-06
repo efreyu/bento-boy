@@ -51,17 +51,33 @@ void gameScene::onSceneLoading() {
     });
     board->attachController(controllerNode->getEmitter(), buttonA);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX) || (AX_TARGET_PLATFORM == AX_PLATFORM_EMSCRIPTEN)
     keyboardListener = ax::EventListenerKeyboard::create();
-    keyboardListener->onKeyPressed = [this, board](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
+    keyboardListener->onKeyPressed = [buttonA, buttonB](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
         switch (keyCode) {
         case ax::EventKeyboard::KeyCode::KEY_SPACE:
         case ax::EventKeyboard::KeyCode::KEY_ESCAPE:
-        // case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
-            GET_SCENES_FACTORY().runScene("menuScene");
+        case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
+            buttonB->runTouchStart();
             break;
-        case ax::EventKeyboard::KeyCode::KEY_ENTER:
-            board->reloadLevel();
+        case ax::EventKeyboard::KeyCode::KEY_ENTER: {
+            buttonA->runTouchStart();
+        }
+            break;
+        default:
+            break;
+        }
+    };
+    keyboardListener->onKeyReleased = [buttonA, buttonB](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
+        switch (keyCode) {
+        case ax::EventKeyboard::KeyCode::KEY_SPACE:
+        case ax::EventKeyboard::KeyCode::KEY_ESCAPE:
+        case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
+            buttonB->runTouchEnd();
+            break;
+        case ax::EventKeyboard::KeyCode::KEY_ENTER: {
+            buttonA->runTouchEnd();
+        }
             break;
         default:
             break;

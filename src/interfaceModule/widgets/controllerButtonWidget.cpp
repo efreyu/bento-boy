@@ -85,3 +85,18 @@ generic::coreModule::eventNode::eventTouchClb controllerButtonWidget::getOnTouch
     btnNode->setAnimation("default");
     return eventNode::getOnTouchEnded();
 }
+
+void controllerButtonWidget::runTouchStart() {
+    btnNode->setAnimation("pressed");
+    GET_AUDIO_ENGINE().play("ui.click");
+    if (auto clb = eventNode::getOnTouchBegan()) {
+        clb();
+    }
+}
+
+void controllerButtonWidget::runTouchEnd() {
+    btnNode->setAnimation("default");
+    if (auto clb = eventNode::getOnTouchEnded()) {
+        clb();
+    }
+}
