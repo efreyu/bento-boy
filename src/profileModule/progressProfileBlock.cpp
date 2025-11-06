@@ -1,14 +1,15 @@
 #include "progressProfileBlock.h"
 #include <algorithm>
+#include <ranges>
 
 using namespace bt::profileModule;
 using namespace rapidjson;
 
 
 progressProfileBlock::~progressProfileBlock() {
-    for (auto& item : progressByLevels) {
-        delete item.second;
-        item.second = nullptr;
+    for (auto& val : progressByLevels | std::views::values) {
+        delete val;
+        val = nullptr;
     }
     progressByLevels.clear();
 }
@@ -42,7 +43,7 @@ bool progressProfileBlock::save(Value& data, Document::AllocatorType& allocator)
 }
 
 sProgressProfile* progressProfileBlock::getProgressForLevel(int id) {
-    if (progressByLevels.count(id)) {
+    if (progressByLevels.contains(id)) {
         return progressByLevels[id];
     } else {
         auto item = new sProgressProfile();
