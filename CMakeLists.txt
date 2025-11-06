@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.22...4.1)
 set(APP_NAME bento-boy)
 
 project(${APP_NAME})
+set(AX_WASM_THREADS OFF)
 
 if (${DEBUG})
     add_definitions(-DDEBUG=1)
@@ -51,13 +52,13 @@ set(GAME_INC_DIRS
 )
 
 set(content_folder
-    "${CMAKE_CURRENT_SOURCE_DIR}/Resources"
+  "${CMAKE_CURRENT_SOURCE_DIR}/Content"
 )
 
 if(APPLE)
   ax_mark_multi_resources(common_content_files RES_TO "Resources" FOLDERS ${content_folder})
 elseif(WINDOWS)
-  ax_mark_multi_resources(common_content_files RES_TO "Resources" FOLDERS ${content_folder})
+  ax_mark_multi_resources(common_content_files RES_TO "Content" FOLDERS ${content_folder})
 endif()
 
 include(AXGameSourceSetup)
@@ -74,10 +75,6 @@ include(AXGameTargetSetup)
 ax_setup_app_config(${APP_NAME})
 
 # Add any libraries you need to link to the project after this point
-target_link_libraries(${APP_NAME} ${GENERIC_LIB_NAME})
-target_include_directories(${APP_NAME} PRIVATE src)
-target_compile_features(${APP_NAME} PRIVATE cxx_std_17)
-target_compile_options(${APP_NAME} PRIVATE -Wall)
 
 # Default Platform-specific setup
 include(AXGamePlatformSetup)

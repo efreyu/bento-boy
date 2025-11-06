@@ -48,7 +48,7 @@ void controllerStickWidget::initHandler() {
     };
     GET_CURRENT_SCENE()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
-#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX) || (AX_TARGET_PLATFORM == AX_PLATFORM_EMSCRIPTEN)
     keyboardListener = ax::EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = [this](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
         auto keyboardDir = eMoveDirection::UNDEFINED;

@@ -57,7 +57,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 {
     auto setting = GET_RESOLUTION_SETTING();
     setting->load();
-#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX) || (AX_TARGET_PLATFORM == AX_PLATFORM_EMSCRIPTEN)
     setting->init(false, "640x1136");// default development resolution
 #else
     setting->init(true);
@@ -89,7 +89,14 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
-    director->setProjection(Director::Projection::_3D);
+    // director->setProjection(Director::Projection::_3D);
+
+    // Set the design resolution
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_EMSCRIPTEN)
+    renderView->setDesignResolutionSize(640, 1136, ResolutionPolicy::SHOW_ALL);
+#else
+    renderView->setDesignResolutionSize(currentResolution->size.x, currentResolution->size.y, ResolutionPolicy::SHOW_ALL);
+#endif
 
     GET_AUDIO_ENGINE().stopAll();
     // register all profile

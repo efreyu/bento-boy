@@ -33,7 +33,7 @@ namespace bt::interfaceModule {
         void onButtonHold();
 
         ax::EventListenerTouchOneByOne* listener = nullptr;
-#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX) || (AX_TARGET_PLATFORM == AX_PLATFORM_EMSCRIPTEN)
         ax::EventListenerKeyboard* keyboardListener = nullptr;
 #endif
         std::map<gameplayModule::eMoveDirection, ax::Node*> nodesWithDirections;

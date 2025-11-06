@@ -1,0 +1,11 @@
+{
+  "sounds": {
+    "ui.click": "effects/select.mp3",
+    "ui.choose": "effects/choose.mp3",
+
+    "gameScene.win": "effects/win.mp3",
+    "gameScene.move": "effects/move.mp3",
+
+    "music.main": "musics/8bit_Bossa.mp3"
+  }
+}
