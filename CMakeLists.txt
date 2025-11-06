@@ -3,7 +3,11 @@ cmake_minimum_required(VERSION 3.22...4.1)
 set(APP_NAME bento-boy)
 
 project(${APP_NAME})
-set(AX_WASM_THREADS OFF)
+#if(EMSCRIPTEN)
+#    add_link_options(-sUSE_PTHREADS=0)
+#    set(AX_WASM_THREADS OFF)
+##    set(AX_USE_ALSOFT ON)
+#endif()
 
 if (${DEBUG})
     add_definitions(-DDEBUG=1)

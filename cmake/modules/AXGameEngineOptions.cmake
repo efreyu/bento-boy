@@ -41,7 +41,7 @@ set(AX_ENABLE_EXT_SDFGEN OFF CACHE BOOL "Build extension SDFGen" FORCE)
  set(AX_ENABLE_AUDIO ON CACHE BOOL "Build audio support" FORCE)
  set(AX_ENABLE_WEBSOCKET OFF CACHE BOOL "Build Websocket client based on yasio" FORCE)
  set(AX_ENABLE_HTTP OFF CACHE BOOL "Build HTTP client based on yasio" FORCE)
- set(AX_ENABLE_OPUS ON CACHE BOOL "Build with opus support" FORCE)
+ set(AX_ENABLE_OPUS OFF CACHE BOOL "Build with opus support" FORCE)
 
 # WEBVIEW2 - default: ON for WIN32 and WINRT
  set(AX_ENABLE_MSEDGE_WEBVIEW2 OFF CACHE BOOL "Disable msedge webview2")

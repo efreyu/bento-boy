@@ -68,7 +68,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     if (!renderView)
     {
 #if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || \
-(AX_TARGET_PLATFORM == AX_PLATFORM_LINUX)
+(AX_TARGET_PLATFORM == AX_PLATFORM_LINUX) || (AX_TARGET_PLATFORM == AX_PLATFORM_EMSCRIPTEN)
         renderView = RenderViewImpl::createWithRect(
             "Bento boy", ax::Rect(0, 0, currentResolution->size.x, currentResolution->size.y));
 #else
@@ -85,7 +85,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 #endif
 
     // turn on display FPS
-    director->setStatsDisplay(true);
+    director->setStatsDisplay(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
