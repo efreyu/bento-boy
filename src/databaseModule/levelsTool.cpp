@@ -1,7 +1,6 @@
 #include "levelsTool.h"
 #include "databaseModule/databaseManager.h"
 #include "databaseModule/levelsDatabase.h"
-#include "generic/debugModule/logManager.h"
 #include "generic/utilityModule/stringUtility.h"
 #include <map>
 #include <string>
@@ -27,7 +26,7 @@ levelsTool::levelsTool() = default;
 
 levelsTool::~levelsTool() = default;
 
-std::vector<sObjectData> levelsTool::getAllObjects(cocos2d::TMXTiledMap* map, const sLevelData& levelData) {
+std::vector<sObjectData> levelsTool::getAllObjects(ax::TMXTiledMap* map, const sLevelData& levelData) {
     std::vector<sObjectData> result;
     auto layer = map->getObjectGroup(levelData.spawnLayer);
     auto locationDb = GET_DATABASE_MANAGER().getDatabase<levelsDatabase>(databaseManager::eDatabaseType::LEVELS_DB);
@@ -35,7 +34,7 @@ std::vector<sObjectData> levelsTool::getAllObjects(cocos2d::TMXTiledMap* map, co
     if (parseXMLFile(levelData.objectTypesPath)) {
         for (auto& item : objectProperties) {
             bool valid = false;
-            if (item.second.properties.count("type") && item.second.properties["type"].getType() == cocos2d::Value::Type::STRING) {
+            if (item.second.properties.count("type") && item.second.properties["type"].getType() == ax::Value::Type::STRING) {
                 const auto& typeStr(item.second.properties["type"]);
                 auto type = typeStr.asString();
                 item.second.type = locationObjectTypes[type];
@@ -65,9 +64,9 @@ std::vector<sObjectData> levelsTool::getAllObjects(cocos2d::TMXTiledMap* map, co
             }
         }
         for (auto item : layer->getObjects()) {
-            if (item.getType() == cocos2d::Value::Type::MAP) {
+            if (item.getType() == ax::Value::Type::MAP) {
                 auto mapVal = item.asValueMap();
-                if (mapVal.count("type") && mapVal["type"].getType() == cocos2d::Value::Type::STRING
+                if (mapVal.count("type") && mapVal["type"].getType() == ax::Value::Type::STRING
                     && objectProperties.count(mapVal["type"].asString())) {
                     const auto& obj = objectProperties[mapVal["type"].asString()];
                     if (obj.type != eLocationObject::UNDEFINED) {
@@ -77,7 +76,7 @@ std::vector<sObjectData> levelsTool::getAllObjects(cocos2d::TMXTiledMap* map, co
                           static_cast<int>((mapVal["localY"].asFloat() + mapVal["height"].asFloat() / 2) / map->getTileSize().height);
                         result.push_back(data);
                     } else {
-                        LOG_ERROR(CSTRING_FORMAT("Object have incorrect type '%s'", mapVal["type"].asString().c_str()));
+                        LOG_ERROR(fmt::format("Object have incorrect type '{}'", mapVal["type"].asString()));
                     }
                 }
             }
@@ -106,7 +105,7 @@ eLocationWallType levelsTool::getWallTypeByString(const std::string& str) {
 }
 
 bool levelsTool::parseXMLFile(const std::string& xmlFilename) {
-    cocos2d::SAXParser parser;
+    ax::SAXParser parser;
 
     if (!parser.init("UTF-8")) {
         return false;
@@ -114,17 +113,17 @@ bool levelsTool::parseXMLFile(const std::string& xmlFilename) {
 
     parser.setDelegator(this);
 
-    return parser.parse(cocos2d::FileUtils::getInstance()->fullPathForFilename(xmlFilename));
+    return parser.parse(ax::FileUtils::getInstance()->fullPathForFilename(xmlFilename));
 }
 
 void levelsTool::startElement(void* /*ctx*/, const char* name, const char** atts) {
     std::string elementName = name;
-    cocos2d::ValueMap attributeDict;
+    ax::ValueMap attributeDict;
     if (atts && atts[0]) {
         for (int i = 0; atts[i]; i += 2) {
             std::string key = atts[i];
             std::string value = atts[i + 1];
-            attributeDict.emplace(key, cocos2d::Value(value));
+            attributeDict.emplace(key, ax::Value(value));
         }
     }
     if (elementName == "objecttype") {
@@ -137,7 +136,7 @@ void levelsTool::startElement(void* /*ctx*/, const char* name, const char** atts
         auto variableType = attributeDict["type"].asString();
         auto value = attributeDict["default"].asString();
         auto type = levelsDatabase::getValueType(variableType);
-        if (type != cocos2d::Value::Type::NONE) {
+        if (type != ax::Value::Type::NONE) {
             objectProperties[lastObject].properties[variableName] = makeValue(type, value);
         }
     } else if (elementName == "objecttypes") {
@@ -151,23 +150,23 @@ void levelsTool::endElement(void* /*ctx*/, const char* name) {}
 
 void levelsTool::textHandler(void* /*ctx*/, const char* ch, size_t len) {}
 
-cocos2d::Value levelsTool::makeValue(cocos2d::Value::Type type, const std::string& string) {
-    cocos2d::Value value;
+ax::Value levelsTool::makeValue(ax::Value::Type type, const std::string& string) {
+    ax::Value value;
     switch (type) {
-    case cocos2d::Value::Type::BOOLEAN:
+    case ax::Value::Type::BOOLEAN:
         if (string == "true") {
             value = true;
         } else if (string == "false") {
             value = false;
         }
         break;
-    case cocos2d::Value::Type::INTEGER:
+    case ax::Value::Type::INTEGER:
         value = std::stoi(string);
         break;
-    case cocos2d::Value::Type::FLOAT:
+    case ax::Value::Type::FLOAT:
         value = std::stof(string);
         break;
-    case cocos2d::Value::Type::STRING:
+    case ax::Value::Type::STRING:
         value = string;
         break;
     default:

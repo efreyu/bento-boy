@@ -1,4 +1,14 @@
-include ':libcocos2dx'
-project(':libcocos2dx').projectDir = new File(settingsDir, '../cocos2d/cocos/platform/android/libcocos2dx')
-include ':BentoTime'
-project(':BentoTime').projectDir = new File(settingsDir, 'app')
+import java.nio.file.Paths
+
+def folder = new File("${settingsDir}/../axmol")
+if (folder.exists()) {
+    System.setProperty("AX_ROOT", folder.path)
+} else {
+    System.setProperty("AX_ROOT", "${System.env.AX_ROOT}")
+}
+
+include ':libaxmol'
+project(':libaxmol').projectDir = new File(Paths.get("${System.properties.AX_ROOT}/axmol/platform/android/libaxmol").toUri())
+include ':bento-boy'
+project(':bento-boy').projectDir = new File(settingsDir, 'app')
+rootProject.name = "bento-boy"

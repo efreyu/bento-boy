@@ -1,7 +1,7 @@
-#ifndef BENTO_TIME_BENTONODE_H
-#define BENTO_TIME_BENTONODE_H
+#ifndef BENTO_BOY_BENTONODE_H
+#define BENTO_BOY_BENTONODE_H
 
-#include "cocos2d.h"
+#include "axmol/axmol.h"
 #include "databaseModule/mapObjectsDatabase.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include <string>
@@ -12,7 +12,7 @@ namespace bt::gameplayModule {
     };
     class bentoNode
       : public generic::coreModule::nodeProperties
-      , public cocos2d::Node {
+      , public ax::Node {
     public:
         bentoNode();
         ~bentoNode() override;
@@ -27,4 +27,4 @@ namespace bt::gameplayModule {
 }// namespace bt::gameplayModule
 
 
-#endif// BENTO_TIME_BENTONODE_H
+#endif// BENTO_BOY_BENTONODE_H

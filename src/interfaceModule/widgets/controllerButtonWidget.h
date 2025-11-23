@@ -1,7 +1,7 @@
-#ifndef BENTO_TIME_CONTROLLERBUTTONWIDGET_H
-#define BENTO_TIME_CONTROLLERBUTTONWIDGET_H
+#ifndef BENTO_BOY_CONTROLLERBUTTONWIDGET_H
+#define BENTO_BOY_CONTROLLERBUTTONWIDGET_H
 
-#include "cocos2d.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 #include "generic/coreModule/nodes/types/buttonType.h"
 #include "generic/coreModule/nodes/types/eventNode.h"
@@ -15,13 +15,15 @@ namespace bt::interfaceModule {
     enum class eControllerIconType { MENU = 0, REPLAY };
 
     class controllerButtonWidget
-      : public generic::coreModule::buttonType<cocos2d::Node>
+      : public generic::coreModule::buttonType<ax::Node>
       , public generic::coreModule::nodeProperties {
     public:
         controllerButtonWidget();
         void updateSettings() override;
         eventTouchClb getOnTouchBegan() override;
         eventTouchClb getOnTouchEnded() override;
+        void runTouchStart();
+        void runTouchEnd();
 
     private:
         void updateButton(eControllerButtonType _buttonType, eControllerIconType iconType, const std::string& iconAnimation = "");
@@ -34,4 +36,4 @@ namespace bt::interfaceModule {
 }// namespace bt::interfaceModule
 
 
-#endif// BENTO_TIME_CONTROLLERBUTTONWIDGET_H
+#endif// BENTO_BOY_CONTROLLERBUTTONWIDGET_H

@@ -1,0 +1,15 @@
+{
+  "struct": {
+    "type": "node",
+    "name": "bentoNode",
+    "child": []
+  },
+  "props": {
+    "bentoNode": {
+      "transformProperty": {
+        "anchor": [0.5, 0.5],
+        "pivot": [0.0, 0.0]
+      }
+    }
+  }
+}

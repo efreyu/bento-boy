@@ -4,7 +4,7 @@ using namespace bt::interfaceModule;
 
 menuButton::menuButton() {
     this->setName("menuButton");
-    initWithProperties("widgets/" + this->getName());
+    initWithProperties("widgets/" + std::string(this->getName()));
 }
 
 menuButton::~menuButton() {}

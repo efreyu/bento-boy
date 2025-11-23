@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Bento Boy</title>
+  <style>
+    #container { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+    canvas { display:block; width: 640px; height: 1136px; }
+    #canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* центрирование */
+      display: block;
+    }
+    html, body, #main {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #main {
+      position: relative;
+      background-color: rgb(81, 69, 136);
+    }
+
+    #loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      font-family: sans-serif;
+      z-index: 10;
+    }
+
+    #status {
+      margin-bottom: 10px;
+    }
+
+  </style>
+</head>
+<body>
+<div id="main">
+  <div id="loader">
+    <div id="status">Downloading...</div>
+    <progress value="0" max="100" id="progress" hidden=1></progress>
+  </div>
+
+  <canvas class="emscripten" id="canvas"
+          oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+</div>
+
+<script type='text/javascript'>
+  var statusElement = document.getElementById('status');
+  var progressElement = document.getElementById('progress');
+
+  var Module = {
+    preInit: [],
+    preRun: [],
+    postRun: [],
+    printErr: function(text) {
+      if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+      console.error(text);
+    },
+    canvas: (function() {
+      var canvas = document.getElementById('canvas');
+
+      // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+      // application robust, you may want to override this behavior before shipping!
+      // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+      canvas.addEventListener("webglcontextlost", function(e) { Module.ccall('axmol_webglcontextlost'); alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+      canvas.addEventListener("webglcontextrestored", function(e) { Module.ccall('axmol_webglcontextrestored'); e.preventDefault(); }, false);
+
+      document.addEventListener("visibilitychange", () => { Module.ccall('axmol_hdoc_visibilitychange', document.hidden); });
+
+      return canvas;
+    })(),
+    setStatus: function(text) {
+      if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
+      if (text === Module.setStatus.last.text) return;
+      var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+      var now = Date.now();
+      if (m && now - Module.setStatus.last.time < 30) return; // if this is a progress update, skip it if too soon
+      Module.setStatus.last.time = now;
+      Module.setStatus.last.text = text;
+      if (m) {
+        text = m[1];
+        progressElement.value = parseInt(m[2])*100;
+        progressElement.max = parseInt(m[4])*100;
+        progressElement.hidden = false;
+      } else {
+        progressElement.value = null;
+        progressElement.max = null;
+        progressElement.hidden = true;
+      }
+      statusElement.innerHTML = text;
+    },
+    totalDependencies: 0,
+    monitorRunDependencies: function(left) {
+      this.totalDependencies = Math.max(this.totalDependencies, left);
+      Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+    }
+  };
+  Module.setStatus('Downloading...');
+  window.onerror = function() {
+    Module.setStatus('Exception thrown, see JavaScript console');
+    Module.setStatus = function(text) {
+      if (text) Module.printErr('[post-exception status] ' + text);
+    };
+  };
+</script>
+<script type='text/javascript'>
+  Module.preRun.push(function() {
+    addRunDependency('sync_writable_path')
+    FS.mkdir('/axmolPersistPath')
+    FS.mount(IDBFS, {}, '/axmolPersistPath')
+    FS.syncfs(true, function (err) {
+      if (err) {
+        throw err
+      }
+      removeRunDependency('sync_writable_path')
+    })
+    // #region axmol-spec, enable output as-is to console without split by \n
+    TTY.stream_ops.write = function(stream, buffer, offset, length, pos) {
+      var tty = stream.tty;
+      if (!tty || !tty.ops.put_char) {
+        throw new FS.ErrnoError(60);
+      }
+      try {
+        for (var i = 0; i < length; i++) {
+          var val = buffer[offset+i];
+          if (val === null) {
+            continue;
+          } else {
+            if (val != 0) tty.output.push(val); // val == 0 would cut text output off in the middle.
+          }
+        }
+      } catch (e) {
+        throw new FS.ErrnoError(29);
+      }
+      out(UTF8ArrayToString(tty.output, 0));
+      tty.output = [];
+      if (length) {
+        stream.node.timestamp = Date.now();
+      }
+      return i;
+    }
+    //  #endregion axmol-spec
+  })
+</script>
+<script async type="text/javascript" src="bento-boy.js"></script>
+</body>
+</html>

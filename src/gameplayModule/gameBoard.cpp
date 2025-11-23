@@ -4,24 +4,26 @@
 #include "gameplayModule/mapDispatcher.h"
 #include "generic/audioModule/audioEngineInstance.h"
 #include "generic/coreModule/nodes/types/node3d.h"
-#include "generic/debugModule/imGuiLayer.h"
-#include "generic/debugModule/logManager.h"
+// #include "generic/debugModule/imGuiLayer.h"
+// #include "generic/debugModule/logManager.h"
 #include "generic/profileModule/profileManager.h"
+#include "generic/utilityModule/findUtility.h"
 #include "interfaceModule/widgets/controllerStickWidget.h"
 #include "profileModule/progressProfileBlock.h"
 
 using namespace bt::gameplayModule;
 using namespace bt::databaseModule;
+using namespace generic::utilityModule;
 
 gameBoard::gameBoard() {
     this->setName("gameBoard");
     initWithProperties(this->getName());
-    gameFieldNode = findNode("gameField");
+    gameFieldNode = findNode(this, "gameField");
     if (!gameFieldNode) {
         LOG_ERROR("gameField was not loaded correctly!");
     }
-    movesLabel = dynamic_cast<cocos2d::Label*>(findNode("movesLabel"));
-    levelsLabel = dynamic_cast<cocos2d::Label*>(findNode("infoLabel"));
+    movesLabel = dynamic_cast<ax::Label*>(findNode(this, "movesLabel"));
+    levelsLabel = dynamic_cast<ax::Label*>(findNode(this, "infoLabel"));
     loadSettings();
     removeJsonData();
 }
@@ -52,18 +54,17 @@ gameBoard::~gameBoard() {
 void gameBoard::loadLevel(int id) {
     auto levelsDb = GET_DATABASE_MANAGER().getDatabase<levelsDatabase>(databaseManager::eDatabaseType::LEVELS_DB);
     if (!levelsDb->hasLevelById(id)) {
-        LOG_ERROR(cocos2d::StringUtils::format("level %d not found!", id));
+        LOG_ERROR(fmt::format("level {} not found!", id));
         GET_SCENES_FACTORY().runScene("menuScene");
         return;
     }
     if (tiledMap) {
         tiledMap->removeFromParentAndCleanup(true);
-        delete tiledMap;
         tiledMap = nullptr;
     }
     currentLevel = id;
     auto levelData = levelsDb->getLevelById(id);
-    tiledMap = new cocos2d::TMXTiledMap();
+    tiledMap = new ax::TMXTiledMap();
     tiledMap->initWithTMXFile(levelData.tmxPath);
     gameFieldNode->addChild(tiledMap);
     // update battleField size
@@ -77,13 +78,12 @@ void gameBoard::loadLevel(int id) {
     {
         auto width = tiledMap->getTileSize().width;
         auto mapSize = tiledMap->getMapSize();
-        auto scale = cocos2d::Director::getInstance()->getVisibleSize().width / (mapSize.width * width - width);
+        auto scale = ax::Director::getInstance()->getVisibleSize().width / (mapSize.width * width - width);
         setScale(scale);
     }
 
-    if (auto objectsLayer = gameFieldNode->findNode("objectsLayer")) {
+    if (auto objectsLayer = findNode(gameFieldNode, "objectsLayer")) {
         objectsLayer->removeFromParentAndCleanup(true);
-        delete objectsLayer;
         objectsLayer = nullptr;
     }
     auto objectsLayer = new generic::coreModule::node3d();
@@ -115,7 +115,7 @@ void gameBoard::loadLevel(int id) {
     updateMovesScore();
     if (levelsLabel) {
         if (!settings.levelsPattern.empty()) {
-            levelsLabel->setString(cocos2d::StringUtils::format(settings.levelsPattern.c_str(), currentLevel));
+            levelsLabel->setString(fmt::format(fmt::runtime(settings.levelsPattern), currentLevel));
         } else {
             levelsLabel->setString(std::to_string(currentLevel));
         }
@@ -128,19 +128,24 @@ void gameBoard::attachController(interfaceModule::sControllerStickEvents* emitte
             dispatcher->move(direction);
     });
     replayBtn->setOnTouchBegan([this](){
-        if (!boardBlocked) {
-            boardBlocked = true;
-            runHideAnimation([this](){
-                loadLevel(currentLevel);
-            });
-        }
+        reloadLevel();
     });
+}
+
+void gameBoard::reloadLevel() {
+    if (!boardBlocked) {
+        boardBlocked = true;
+        // runHideAnimation([this](){
+            // loadLevel(currentLevel);
+        // });
+        loadLevel(currentLevel);
+    }
 }
 
 void gameBoard::updateMovesScore() {
     if (movesLabel) {
         if (!settings.movesPattern.empty()) {
-            movesLabel->setString(cocos2d::StringUtils::format(settings.movesPattern.c_str(), movesCnt));
+            movesLabel->setString(fmt::format(fmt::runtime(settings.movesPattern), movesCnt));
         } else {
             movesLabel->setString(std::to_string(movesCnt));
         }
@@ -148,20 +153,20 @@ void gameBoard::updateMovesScore() {
 }
 
 void gameBoard::runShowAnimation(const std::function<void()>& clb) {
-//    auto fadein = cocos2d::Show::create(settings.fadeDuration);
-    auto clbDone = cocos2d::CallFunc::create([clb](){
+//    auto fadein = ax::Show::create(settings.fadeDuration);
+    auto clbDone = ax::CallFunc::create([clb](){
         if (clb)
             clb();
     });
-    runAction(cocos2d::Sequence::create(clbDone, nullptr));
+    runAction(ax::Sequence::create(clbDone, nullptr));
 }
 
 void gameBoard::runHideAnimation(const std::function<void()>& clb) {
-//    auto fadeout = cocos2d::Hide::create(settings.fadeDuration);
-    auto delay = cocos2d::DelayTime::create(settings.delayDuration);
-    auto clbDone = cocos2d::CallFunc::create([clb](){
+//    auto fadeout = ax::Hide::create(settings.fadeDuration);
+    auto delay = ax::DelayTime::create(settings.delayDuration);
+    auto clbDone = ax::CallFunc::create([clb](){
         if (clb)
             clb();
     });
-    runAction(cocos2d::Sequence::create(delay, clbDone, nullptr));
+    runAction(ax::Sequence::create(delay, clbDone, nullptr));
 }

@@ -3,7 +3,6 @@
 #include "databaseModule/levelsDatabase.h"
 #include "gameplayModule/bentoNode.h"
 #include "generic/coreModule/nodes/types/node3d.h"
-#include "generic/debugModule/logManager.h"
 
 
 using namespace bt::gameplayModule;
@@ -11,10 +10,10 @@ using namespace bt::databaseModule;
 
 const float animDelay = 0.13f;
 
-mapDispatcher* mapDispatcher::createWithObjectsNode(cocos2d::Node* node, cocos2d::TMXTiledMap* tiled, int levelId) {
+mapDispatcher* mapDispatcher::createWithObjectsNode(ax::Node* node, ax::TMXTiledMap* tiled, int levelId) {
     auto levelsDb = GET_DATABASE_MANAGER().getDatabase<levelsDatabase>(databaseManager::eDatabaseType::LEVELS_DB);
     if (!levelsDb->hasLevelById(levelId)) {
-        LOG_ERROR(cocos2d::StringUtils::format("level %d not found!", levelId));
+        LOG_ERROR(fmt::format("level {} not found!", levelId));
         return nullptr;
     }
     auto levelData = levelsDb->getLevelById(levelId);
@@ -28,8 +27,8 @@ mapDispatcher* mapDispatcher::createWithObjectsNode(cocos2d::Node* node, cocos2d
 mapDispatcher::~mapDispatcher() {
     for (auto& [_, col] : cells) {
         for (auto& [_, cell] : col) {
-            CC_SAFE_RELEASE_NULL(cell->node);
-            CC_SAFE_DELETE(cell);
+            AX_SAFE_RELEASE_NULL(cell->node);
+            AX_SAFE_DELETE(cell);
         }
     }
     cells.clear();
@@ -46,11 +45,11 @@ bool mapDispatcher::move(eMoveDirection direction) {
             std::vector<mapCell*> sleepBlocks;
             getClosestCells(tempCells, sleepBlocks, direction);
             std::for_each(sleepBlocks.begin(), sleepBlocks.end(), [this, p](mapCell* c){
-                auto delay = cocos2d::DelayTime::create(animDelay);
-                auto clb = cocos2d::CallFunc::create([bento = c->node](){
+                auto delay = ax::DelayTime::create(animDelay);
+                auto clb = ax::CallFunc::create([bento = c->node](){
                     bento->setAnimation(eBentoAnimation::IDLE);
                 });
-                c->node->runAction(cocos2d::Sequence::create(delay, clb, nullptr));
+                c->node->runAction(ax::Sequence::create(delay, clb, nullptr));
             });
         }
         connectedCells->reset();
@@ -74,12 +73,12 @@ bool mapDispatcher::move(eMoveDirection direction) {
     return true;
 }
 
-void mapDispatcher::loadWalls(const databaseModule::sLevelData& levelData, cocos2d::TMXTiledMap* tiled) {
+void mapDispatcher::loadWalls(const databaseModule::sLevelData& levelData, ax::TMXTiledMap* tiled) {
     auto wallsLayerName = levelData.wallsLayer;
     auto wallsPropPattern = levelData.wallPropPattern;
     auto wallsLayer = tiled->getLayer(wallsLayerName);
     if (!wallsLayer) {
-        LOG_ERROR(cocos2d::StringUtils::format("wallsLayerName %s not found!", wallsLayerName.c_str()));
+        LOG_ERROR(fmt::format("wallsLayerName {} not found!", wallsLayerName));
         return;
     }
     const auto& layerSize = wallsLayer->getLayerSize();
@@ -87,20 +86,20 @@ void mapDispatcher::loadWalls(const databaseModule::sLevelData& levelData, cocos
     const auto wallsCount = levelTool.getWallCount();
     std::vector<std::string> wallsIds;
     for (int i = 0; i < wallsCount; ++i) {
-        wallsIds.push_back(cocos2d::StringUtils::format(wallsPropPattern.c_str(), i));
+        wallsIds.push_back(fmt::format(fmt::runtime(wallsPropPattern), i));
     }
     for (auto x = 0; x < mapSize.first; ++x) {
         for (auto y = 0; y < mapSize.second; ++y) {
             auto gid = wallsLayer->getTileGIDAt({ static_cast<float>(x), static_cast<float>(y) });
             auto prop = tiled->getPropertiesForGID(gid);
-            if (prop.getType() != cocos2d::Value::Type::MAP) {
+            if (prop.getType() != ax::Value::Type::MAP) {
                 continue;
             }
             auto val = prop.asValueMap();
             for (const auto& key : wallsIds) {
                 if (val.count(key)) {
                     const auto& item = val[key];
-                    if (item.getType() == cocos2d::Value::Type::STRING) {
+                    if (item.getType() == ax::Value::Type::STRING) {
                         auto wallType = levelTool.getWallTypeByString(item.asString());
                         if (wallType != eLocationWallType::UNDEFINED) {
                             walls[x][y].insert(wallType);
@@ -113,7 +112,7 @@ void mapDispatcher::loadWalls(const databaseModule::sLevelData& levelData, cocos
     wallsLayer->setVisible(false);
 }
 
-void mapDispatcher::spawnObjects(const databaseModule::sLevelData& levelData, cocos2d::TMXTiledMap* tiled) {
+void mapDispatcher::spawnObjects(const databaseModule::sLevelData& levelData, ax::TMXTiledMap* tiled) {
     if (!objectsNode) {
         LOG_ERROR("ObjectNode is not inited.");
         return;
@@ -125,14 +124,14 @@ void mapDispatcher::spawnObjects(const databaseModule::sLevelData& levelData, co
     for (const auto& item : allSpawnPos) {
         auto tile = layer->getTileAt({ static_cast<float>(item.x), static_cast<float>(item.y) });
         if (!tile) {
-            LOG_ERROR(cocos2d::StringUtils::format("Can't find element on layer by pos %d, %d", item.x, item.y));
+            LOG_ERROR(fmt::format("Can't find element on layer by pos {}, {}", item.x, item.y));
             continue;
         }
         switch (item.type) {
         case eLocationObject::FOOD:
         case eLocationObject::LEVEL_START: {
             auto id = 0;
-            if (item.properties.count("id") && item.properties.at("id").getType() == cocos2d::Value::Type::INTEGER) {
+            if (item.properties.count("id") && item.properties.at("id").getType() == ax::Value::Type::INTEGER) {
                 id = item.properties.at("id").asInt();
             } else {
                 LOG_ERROR("Object don't have 'id'");
@@ -146,8 +145,8 @@ void mapDispatcher::spawnObjects(const databaseModule::sLevelData& levelData, co
             }
             unitObject->objectId = id;
             if (!mapObjectsDb->hasMapObjectById(unitObject->objectId)) {
-                LOG_ERROR(cocos2d::StringUtils::format("Character with id '%d' not found!", unitObject->objectId));
-                CC_SAFE_DELETE(unitObject);
+                LOG_ERROR(fmt::format("Character with id '{}' not found!", unitObject->objectId));
+                AX_SAFE_DELETE(unitObject);
                 continue;
             }
             auto characterData = mapObjectsDb->getMapObjectById(unitObject->objectId);
@@ -166,8 +165,8 @@ void mapDispatcher::spawnObjects(const databaseModule::sLevelData& levelData, co
                     playerCells.push_back(cell);
                 }
             } else {
-                LOG_ERROR(cocos2d::StringUtils::format("Node '%d' has position same as the placed one.", unitObject->objectId));
-                CC_SAFE_DELETE(unitObject);
+                LOG_ERROR(fmt::format("Node '{}' has position same as the placed one.", unitObject->objectId));
+                AX_SAFE_DELETE(unitObject);
             }
         } break;
         case eLocationObject::LEVEL_END:
@@ -285,11 +284,11 @@ bool mapCell::move(eMoveDirection direction) {
         default: break;
         }
         node->setAnimation(eBentoAnimation::MOVE);
-        auto action = cocos2d::MoveTo::create(animDelay, actionPos);
-        auto clb = cocos2d::CallFunc::create([this, bento = node](){
+        auto action = ax::MoveTo::create(animDelay, actionPos);
+        auto clb = ax::CallFunc::create([this, bento = node](){
             bento->setAnimation(eBentoAnimation::IDLE);
         });
-        node->runAction(cocos2d::Sequence::create(action, clb, nullptr));
+        node->runAction(ax::Sequence::create(action, clb, nullptr));
         return true;
     }
     return false;

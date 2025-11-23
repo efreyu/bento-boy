@@ -1,8 +1,8 @@
-# bento-time
+# bento-boy
 
 #### Project submodules structure:
 
-- (root) [Current game project](https://github.com/efreyu/bento-time)
+- (root) [Current game project](https://github.com/efreyu/bento-boy)
 - (src/generic) [Common modules for all games](https://github.com/gloomyzen/cocos2d-common)
 - (cocos2d) [Modified core](https://github.com/gloomyzen/cocos2d-x) *see .patch file 'docs/cocos2d-x v4 features.patch'
 - (lib/imgui) [ImGui for cocos2d v4](https://github.com/gloomyzen/cocos2d-x-imgui)
@@ -11,13 +11,13 @@
 1. Install cocos2d v4
 2. Clone repo with all submodules
 ```bash
-git clone --recurse-submodules git@github.com:efreyu/bento-time.git bento-time 
-cd bento-time
+git clone --recurse-submodules git@github.com:efreyu/bento-boy.git bento-boy 
+cd bento-boy
 ```
 
 #### Build from sources:
 ```bash
-cd bento-time
+cd bento-boy
 cmake .. -DDEBUG=1
 make -j$(nproc)
 ```
@@ -26,19 +26,19 @@ make -j$(nproc)
 
 For XCode - mac project
 ```bash
-cd bento-time
+cd bento-boy
 cmake -S . -B build-win32 -GXcode -DDEBUG=1
 ```
 
 For XCode - ios project
 ```bash
-cd bento-time
+cd bento-boy
 cmake -S . -B build-ios -GXcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_SYSROOT=iphoneos
 ```
 
 For Visual Studio Community 2019
 ```bash
-cd bento-time
+cd bento-boy
 cmake -S . -B build-win32 -G"Visual Studio 16 2019" -Tv142 -A Win32 -DDEBUG=1
 and open .sln file from `build-win32` folder
 ```

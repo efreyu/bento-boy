@@ -1,0 +1,70 @@
+{
+  "struct": {
+    "type": "sprite",
+    "name": "gameBoard",
+    "child": [
+      {
+        "type": "node",
+        "name": "gameField"
+      },
+      {
+        "type": "label",
+        "name": "movesLabel"
+      },
+      {
+        "type": "label",
+        "name": "infoLabel"
+      }
+    ]
+  },
+  "props": {
+    "gameBoard": {
+      "transformProperty": {
+        "anchor": [ 0.5, 0.5 ],
+        "pivot": [ 0.5, 0.5 ]
+      }
+    },
+    "gameField": {
+      "transformProperty": {
+        "anchor": [ 0.5, 1.0 ],
+        "pivot": [ 0.5, 1.0 ]
+      }
+    },
+    "movesLabel": {
+      "transformProperty": {
+        "pivot": [ 0.0, 0.0 ],
+        "anchor": [ 0.0, 0.0 ],
+        "position": [94, 84]
+      },
+      "labelProperty": {
+        "text": "moves:--",
+        "fontType": "ttf",
+        "fontSize": 64.0,
+        "fontFile": "fonts/VT323-Regular.ttf",
+        "bold": true,
+        "align": "left"
+      }
+    },
+    "infoLabel": {
+      "transformProperty": {
+        "pivot": [ 0.0, 1.0 ],
+        "anchor": [ 0.0, 1.0 ],
+        "position": [94, -74]
+      },
+      "labelProperty": {
+        "text": "Level 1",
+        "fontType": "ttf",
+        "fontSize": 64.0,
+        "fontFile": "fonts/VT323-Regular.ttf",
+        "bold": true,
+        "align": "left"
+      }
+    },
+    "settings": {
+      "movesPattern": "Moves:{}",
+      "levelsPattern": "Level:{}",
+      "fadeDuration": 0.75,
+      "delayDuration": 1.2
+    }
+  }
+}

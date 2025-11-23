@@ -7,6 +7,7 @@
 #include "generic/coreModule/scenes/scenesFactoryInstance.h"
 #include "generic/profileModule/profileManager.h"
 #include "generic/utilityModule/convertUtility.h"
+#include "generic/utilityModule/findUtility.h"
 #include "interfaceModule/widgets/buttonWidget.h"
 #include "interfaceModule/widgets/controllerButtonWidget.h"
 #include "interfaceModule/widgets/controllerStickWidget.h"
@@ -16,7 +17,8 @@ using namespace bt::sceneModule;
 using namespace bt::interfaceModule;
 using namespace bt::gameplayModule;
 using namespace bt::databaseModule;
-using namespace cocos2d;
+using namespace ax;
+using namespace generic::utilityModule;
 
 std::map<eMenuPageType, std::string> menuTypes = {
     {eMenuPageType::MAIN_MENU, "mainMenu"},
@@ -25,7 +27,7 @@ std::map<eMenuPageType, std::string> menuTypes = {
 
 menuScene::menuScene() {
     this->setName("menuScene");
-    initWithProperties("scenes/" + this->getName());
+    initWithProperties("scenes/" + std::string(this->getName()));
     loadSettings();
 }
 
@@ -33,7 +35,7 @@ void menuScene::loadSettings() {
     if (!hasPropertyObject("settings"))
         return;
     const auto& json = getPropertyObject("settings");
-    auto color = cocos2d::Color3B::BLACK;
+    auto color = ax::Color32::BLACK;
     if (json.HasMember("bgColor") && json["bgColor"].IsArray()) {
         color.r = static_cast<uint8_t>(json["bgColor"][0u].GetInt());
         color.g = static_cast<uint8_t>(json["bgColor"][1u].GetInt());
@@ -41,7 +43,7 @@ void menuScene::loadSettings() {
     }
     initLayerColor(color);
     if (json.HasMember("fadeTransitionTime") && json["fadeTransitionTime"].IsNumber()) {
-        fadeTransitionTime = json["fadeTransitionTime"].GetFloat();
+        _fadeTransitionTime = json["fadeTransitionTime"].GetFloat();
     }
     if (json.HasMember("allowedItemCount") && json["allowedItemCount"].IsNumber()) {
         settings.allowedItemCount = json["allowedItemCount"].GetInt();
@@ -66,9 +68,9 @@ void menuScene::loadSettings() {
 void menuScene::onSceneLoading() {
     sceneInterface::onSceneLoading();
     GET_AUDIO_ENGINE().playOnce("music.main", true);
-    auto controllerNode = dynamic_cast<interfaceModule::controllerStickWidget*>(findNode("controller"));
-    auto buttonA = dynamic_cast<interfaceModule::controllerButtonWidget*>(findNode("buttonA"));
-    auto buttonB = dynamic_cast<interfaceModule::controllerButtonWidget*>(findNode("buttonB"));
+    auto controllerNode = dynamic_cast<interfaceModule::controllerStickWidget*>(findNode(this, "controller"));
+    auto buttonA = dynamic_cast<interfaceModule::controllerButtonWidget*>(findNode(this, "buttonA"));
+    auto buttonB = dynamic_cast<interfaceModule::controllerButtonWidget*>(findNode(this, "buttonB"));
     if (!controllerNode || !buttonA || !buttonB) {
         LOG_ERROR("Problems with loading nodes.");
         return;
@@ -118,12 +120,48 @@ void menuScene::onSceneLoading() {
         GET_SCENES_FACTORY().runScene("menuScene");
     });
     loadPage(menuTypes[eMenuPageType::MAIN_MENU]);
+
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) || (AX_TARGET_PLATFORM == AX_PLATFORM_MAC) || (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX) || (AX_TARGET_PLATFORM == AX_PLATFORM_EMSCRIPTEN)
+    keyboardListener = ax::EventListenerKeyboard::create();
+    keyboardListener->onKeyPressed = [buttonA, buttonB](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
+        switch (keyCode) {
+        case ax::EventKeyboard::KeyCode::KEY_SPACE:
+        case ax::EventKeyboard::KeyCode::KEY_ESCAPE:
+        case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
+            buttonB->runTouchStart();
+            break;
+        case ax::EventKeyboard::KeyCode::KEY_ENTER: {
+            buttonA->runTouchStart();
+        }
+            break;
+        default:
+            break;
+        }
+    };
+    keyboardListener->onKeyReleased = [buttonA, buttonB](ax::EventKeyboard::KeyCode keyCode, ax::Event* event) {
+        switch (keyCode) {
+        case ax::EventKeyboard::KeyCode::KEY_SPACE:
+        case ax::EventKeyboard::KeyCode::KEY_ESCAPE:
+        case ax::EventKeyboard::KeyCode::KEY_BACKSPACE:
+            buttonB->runTouchEnd();
+            break;
+        case ax::EventKeyboard::KeyCode::KEY_ENTER: {
+            buttonA->runTouchEnd();
+        }
+            break;
+        default:
+            break;
+        }
+    };
+    GET_CURRENT_SCENE()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+
+#endif
 }
 
 void menuScene::initMenu(const std::string& path) {
     auto data = GET_JSON(path);
     if (data.HasParseError() || !data.IsObject()) {
-        LOG_ERROR(cocos2d::StringUtils::format("Can't read file %s.", path.c_str()));
+        LOG_ERROR(fmt::format("Can't read file {}.", path.c_str()));
         return;
     }
     for (auto it = data.MemberBegin(); it != data.MemberEnd(); ++it) {
@@ -171,7 +209,7 @@ void menuScene::initMenu(const std::string& path) {
     auto levelDb = GET_DATABASE_MANAGER().getDatabase<levelsDatabase>(databaseManager::eDatabaseType::LEVELS_DB);
     for (const auto& [id, info] : levelDb->getLevels()) {
         if (page->buttons.size() > settings.allowedItemCount) {
-            auto newId = cocos2d::StringUtils::format("%s_%d", menuTypes[eMenuPageType::PLAY].c_str(), id);
+            auto newId = fmt::format("{}_{}", menuTypes[eMenuPageType::PLAY], id);
             auto button = std::make_shared<menuItem>();
             button->text = settings.moreButtonText;
             button->type = newId;
@@ -190,15 +228,15 @@ void menuScene::initMenu(const std::string& path) {
         auto button = std::make_shared<menuItem>();
         auto progress = progressBlock->getProgressForLevel(id);
         if (progress && !settings.levelProgressPattern.empty()) {
-            button->text = cocos2d::StringUtils::format(settings.levelProgressPattern.c_str(), id, progress->getMoves());
+            button->text = fmt::format(fmt::runtime(settings.levelProgressPattern), id, progress->getMoves());
         } else {
             button->text = std::to_string(id);
         }
         button->enabled = id == 1 || (progress && progress->getMoves() > 0);
         //run game with level
         button->clb = [levelId = id](){
-            cocos2d::ValueMap data;
-            data["levelId"] = cocos2d::Value(levelId);
+            ax::ValueMap data;
+            data["levelId"] = ax::Value(levelId);
             GET_SCENES_FACTORY().runSceneWithParameters("gameScene", data);
         };
         page->buttons.emplace_back(button);
@@ -208,9 +246,9 @@ void menuScene::initMenu(const std::string& path) {
 }
 
 void menuScene::loadPage(const std::string& page) {
-    auto menuHolder = findNode("menuHolder");
-    auto backBtnHolder = findNode("backBtnHolder");
-    auto tipsHolder = findNode("tipsHolder");
+    auto menuHolder = findNode(this, "menuHolder");
+    auto backBtnHolder = findNode(this, "backBtnHolder");
+    auto tipsHolder = findNode(this, "tipsHolder");
 
     if (!menuPagesMap.count(page) || !menuHolder || !backBtnHolder || !tipsHolder) {
         LOG_ERROR("Problems with loading nodes.");
@@ -289,16 +327,16 @@ void menuScene::loadPage(const std::string& page) {
     }
 
     if (!pagePtr->hintText.empty()) {
-        auto tipsLabel = cocos2d::Label::create();
+        auto tipsLabel = ax::Label::createWithTTF(pagePtr->hintText, "fonts/VT323-Regular.ttf", 50.f);
         tipsLabel->setName("tipsLabel");
         loadProperty(tipsLabel, "tipsLabel");
         tipsLabel->setString(pagePtr->hintText);
         tipsHolder->addChild(tipsLabel);
         auto color = tipsLabel->getColor();
         auto nextColor = generic::utilityModule::convertUtility::changeColorByPercent(color, settings.lightening);
-        auto tint = cocos2d::TintTo::create(settings.selectDuration, nextColor);
-        auto reverse = cocos2d::TintTo::create(settings.selectDuration, color);
-        auto seq = cocos2d::Sequence::create(tint, reverse, nullptr);
-        tipsLabel->runAction(cocos2d::RepeatForever::create(seq));
+        auto tint = ax::TintTo::create(settings.selectDuration, nextColor);
+        auto reverse = ax::TintTo::create(settings.selectDuration, color);
+        auto seq = ax::Sequence::create(tint, reverse, nullptr);
+        tipsLabel->runAction(ax::RepeatForever::create(seq));
     }
 }

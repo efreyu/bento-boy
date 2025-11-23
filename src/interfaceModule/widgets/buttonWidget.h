@@ -1,13 +1,13 @@
-#ifndef BENTO_TIME_BUTTONWIDGET_H
-#define BENTO_TIME_BUTTONWIDGET_H
+#ifndef BENTO_BOY_BUTTONWIDGET_H
+#define BENTO_BOY_BUTTONWIDGET_H
 
-#include "cocos2d.h"
+#include "axmol/axmol.h"
 #include "generic/coreModule/nodes/nodeProperties.h"
 
 namespace bt::interfaceModule {
 
     class buttonWidget
-      : public cocos2d::Node
+      : public ax::Node
       , public generic::coreModule::nodeProperties {
     public:
         buttonWidget();
@@ -24,4 +24,4 @@ namespace bt::interfaceModule {
     };
 }// namespace bt::interfaceModule
 
-#endif// BENTO_TIME_BUTTONWIDGET_H
+#endif// BENTO_BOY_BUTTONWIDGET_H

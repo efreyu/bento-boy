@@ -1,0 +1,111 @@
+{
+  "objectsTypes": {
+    "levelStart": {
+      "required": {
+        "id": "int"
+      }
+    },
+    "levelEnd": {},
+    "food": {
+      "required": {
+        "id": "int"
+      },
+      "allowed": {
+        "follow": "bool"
+      }
+    }
+  },
+  "levels": [
+    {
+      "id": 1,
+      "tmxPath": "images/levels/1.tmx",
+      "objectTypes": "images/levels/1OT.xml",
+      "spawnLayer": "spawnLayer",
+      "backgroundLayer": "background_ground",
+      "wallsLayer": "wallsLayer",
+      "wallPropPattern": "wall{}"
+    },
+    {
+      "id": 2,
+      "tmxPath": "images/levels/2.tmx",
+      "objectTypes": "images/levels/1OT.xml",
+      "spawnLayer": "spawnLayer",
+      "backgroundLayer": "background_ground",
+      "wallsLayer": "wallsLayer",
+      "wallPropPattern": "wall{}"
+    },
+    {
+      "id": 3,
+      "tmxPath": "images/levels/3.tmx",
+      "objectTypes": "images/levels/1OT.xml",
+      "spawnLayer": "spawnLayer",
+      "backgroundLayer": "background_ground",
+      "wallsLayer": "wallsLayer",
+      "wallPropPattern": "wall{}"
+    },
+    {
+      "id": 4,
+      "tmxPath": "images/levels/4.tmx",
+      "objectTypes": "images/levels/1OT.xml",
+      "spawnLayer": "spawnLayer",
+      "backgroundLayer": "background_ground",
+      "wallsLayer": "wallsLayer",
+      "wallPropPattern": "wall{}"
+    },
+
+    {
+      "id": 5,
+      "tmxPath": "images/levels/5.tmx",
+      "objectTypes": "images/levels/1OT.xml",
+      "spawnLayer": "spawnLayer",
+      "backgroundLayer": "background_ground",
+      "wallsLayer": "wallsLayer",
+      "wallPropPattern": "wall{}"
+    },
+    {
+      "id": 6,
+      "tmxPath": "images/levels/6.tmx",
+      "objectTypes": "images/levels/1OT.xml",
+      "spawnLayer": "spawnLayer",
+      "backgroundLayer": "background_ground",
+      "wallsLayer": "wallsLayer",
+      "wallPropPattern": "wall{}"
+    },
+    {
+      "id": 7,
+      "tmxPath": "images/levels/7.tmx",
+      "objectTypes": "images/levels/1OT.xml",
+      "spawnLayer": "spawnLayer",
+      "backgroundLayer": "background_ground",
+      "wallsLayer": "wallsLayer",
+      "wallPropPattern": "wall{}"
+    },
+    {
+      "id": 8,
+      "tmxPath": "images/levels/8.tmx",
+      "objectTypes": "images/levels/1OT.xml",
+      "spawnLayer": "spawnLayer",
+      "backgroundLayer": "background_ground",
+      "wallsLayer": "wallsLayer",
+      "wallPropPattern": "wall{}"
+    },
+    {
+      "id": 9,
+      "tmxPath": "images/levels/9.tmx",
+      "objectTypes": "images/levels/1OT.xml",
+      "spawnLayer": "spawnLayer",
+      "backgroundLayer": "background_ground",
+      "wallsLayer": "wallsLayer",
+      "wallPropPattern": "wall{}"
+    },
+    {
+      "id": 10,
+      "tmxPath": "images/levels/10.tmx",
+      "objectTypes": "images/levels/1OT.xml",
+      "spawnLayer": "spawnLayer",
+      "backgroundLayer": "background_ground",
+      "wallsLayer": "wallsLayer",
+      "wallPropPattern": "wall{}"
+    }
+  ]
+}

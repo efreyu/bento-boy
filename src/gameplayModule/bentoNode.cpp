@@ -1,10 +1,13 @@
 #include "bentoNode.h"
 #include "databaseModule/mapObjectsDatabase.h"
 #include "generic/coreModule/nodes/types/asepriteNode.h"
-#include <string>
+#include "generic/utilityModule/findUtility.h"
+
 #include <map>
+#include <string>
 
 using namespace bt::gameplayModule;
+using namespace generic::utilityModule;
 
 std::map<eBentoAnimation, std::string> animationTypes = {
     {eBentoAnimation::WIN, "win"},
@@ -23,7 +26,7 @@ bentoNode::~bentoNode() {}
 
 void bentoNode::initWithData(const databaseModule::sMapObjectsData& data) {
     if (data.nodeType == databaseModule::eNodeType::SPRITE) {
-        auto sprite = new generic::coreModule::nodeWithProperties<cocos2d::Sprite>();
+        auto sprite = new generic::coreModule::nodeWithProperties<ax::Sprite>();
         sprite->setName("spriteNode");
         sprite->loadJson(data.propertyPath);
         sprite->loadProperty(sprite, "spriteNode");
@@ -42,7 +45,7 @@ void bentoNode::initWithData(const databaseModule::sMapObjectsData& data) {
 void bentoNode::setAnimation(eBentoAnimation type) {
     if (lastAnimation != eBentoAnimation::WIN) {
         lastAnimation = type;
-        if (auto asepriteNode = dynamic_cast<generic::coreModule::asepriteNode*>(findNode("asepriteNode"))) {
+        if (auto asepriteNode = dynamic_cast<generic::coreModule::asepriteNode*>(findNode(this, "asepriteNode"))) {
             asepriteNode->setAnimation(animationTypes[type], true);
         }
     }
